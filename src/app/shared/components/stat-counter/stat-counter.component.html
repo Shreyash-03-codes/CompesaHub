@@ -1,0 +1,8 @@
+<div class="stat-counter">
+  <span class="stat-icon" *ngIf="icon">{{ icon }}</span>
+  <div class="stat-value-group">
+    <span class="stat-value">{{ currentValue() }}</span>
+    <span class="stat-suffix" *ngIf="suffix">{{ suffix }}</span>
+  </div>
+  <span class="stat-label">{{ label }}</span>
+</div>

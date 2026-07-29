@@ -1,0 +1,476 @@
+<div class="profile-page">
+  <div class="loading-state" *ngIf="loading()">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <ng-container *ngIf="!loading()">
+    <div class="page-header">
+      <h1 class="page-title" *ngIf="!isOwnProfile()">{{ profile()?.name || 'Profile' }}</h1>
+      <h1 class="page-title" *ngIf="isOwnProfile()">My Profile</h1>
+    </div>
+
+    <!-- ========== BASIC INFO ========== -->
+    <section class="profile-section">
+      <h2 class="section-title">Basic Information</h2>
+      <div class="gold-divider"></div>
+
+      <div class="section-body">
+        <!-- Photo -->
+        <div class="photo-row">
+          <div class="photo-container">
+            <img
+              *ngIf="photoPreview; else noPhoto"
+              [src]="photoPreview"
+              alt="Profile photo"
+              class="profile-photo"
+            />
+            <ng-template #noPhoto>
+              <div class="photo-placeholder">
+                <span>{{ (editName || '?') | slice:0:1 }}</span>
+              </div>
+            </ng-template>
+            <label class="photo-upload-btn" *ngIf="isOwnProfile()">
+              Change Photo
+              <input type="file" accept="image/*" (change)="onPhotoSelected($event)" />
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editName" required minlength="2" />
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.name || '-' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">PRN</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editPrn" />
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.prn || '-' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Class</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editClass" />
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.class || '-' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Division</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editDivision" />
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.division || '-' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Batch</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editBatch" />
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.batch || '-' }}</p>
+          </div>
+          <div class="form-group form-group-full">
+            <label class="form-label">Bio</label>
+            <textarea *ngIf="isOwnProfile()" class="form-input form-textarea" [(ngModel)]="editBio" rows="3"></textarea>
+            <p *ngIf="!isOwnProfile()" class="field-value">{{ profile()?.bio || '-' }}</p>
+          </div>
+          <div class="form-group form-group-full">
+            <label class="form-label">Skills (comma-separated)</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editSkills" placeholder="Angular, TypeScript, Python, ..." />
+            <div *ngIf="!isOwnProfile() && profile()?.skills?.length" class="skills-list">
+              <span class="skill-badge" *ngFor="let s of profile()?.skills">{{ s }}</span>
+            </div>
+            <p *ngIf="!isOwnProfile() && !profile()?.skills?.length" class="field-value">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-actions" *ngIf="isOwnProfile()">
+        <button class="btn-primary" (click)="saveProfile()" [disabled]="saving() || !editName.trim()">
+          {{ saving() ? 'Saving...' : 'Save Profile' }}
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== RESUME ========== -->
+    <section class="profile-section" *ngIf="isOwnProfile()">
+      <h2 class="section-title">Resume</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="resume-row">
+          <a *ngIf="profile()?.resume_url" [href]="profile()?.resume_url" target="_blank" class="btn-secondary">
+            View Current Resume
+          </a>
+          <div class="file-upload">
+            <label class="btn-gold">
+              {{ uploadingResume ? 'Uploading...' : 'Upload Resume (PDF)' }}
+              <input type="file" accept=".pdf" (change)="onResumeSelected($event)" />
+            </label>
+            <span class="file-name" *ngIf="selectedResume">{{ selectedResume.name }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CODING PROFILES ========== -->
+    <section class="profile-section">
+      <h2 class="section-title">Coding Profiles</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">GitHub</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editGithub" type="url" placeholder="https://github.com/username" />
+            <a *ngIf="!isOwnProfile() && profile()?.github_url" [href]="profile()?.github_url" target="_blank" class="field-link">{{ profile()?.github_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.github_url" class="field-value">-</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">LinkedIn</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editLinkedin" type="url" placeholder="https://linkedin.com/in/username" />
+            <a *ngIf="!isOwnProfile() && profile()?.linkedin_url" [href]="profile()?.linkedin_url" target="_blank" class="field-link">{{ profile()?.linkedin_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.linkedin_url" class="field-value">-</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">LeetCode</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editLeetcode" type="url" placeholder="https://leetcode.com/username" />
+            <a *ngIf="!isOwnProfile() && profile()?.leetcode_url" [href]="profile()?.leetcode_url" target="_blank" class="field-link">{{ profile()?.leetcode_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.leetcode_url" class="field-value">-</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">CodeChef</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editCodechef" type="url" placeholder="https://codechef.com/users/username" />
+            <a *ngIf="!isOwnProfile() && profile()?.codechef_url" [href]="profile()?.codechef_url" target="_blank" class="field-link">{{ profile()?.codechef_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.codechef_url" class="field-value">-</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">HackerRank</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editHackerrank" type="url" placeholder="https://hackerrank.com/username" />
+            <a *ngIf="!isOwnProfile() && profile()?.hackerrank_url" [href]="profile()?.hackerrank_url" target="_blank" class="field-link">{{ profile()?.hackerrank_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.hackerrank_url" class="field-value">-</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Portfolio</label>
+            <input *ngIf="isOwnProfile()" class="form-input" [(ngModel)]="editPortfolio" type="url" placeholder="https://your-portfolio.com" />
+            <a *ngIf="!isOwnProfile() && profile()?.portfolio_url" [href]="profile()?.portfolio_url" target="_blank" class="field-link">{{ profile()?.portfolio_url }}</a>
+            <p *ngIf="!isOwnProfile() && !profile()?.portfolio_url" class="field-value">-</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-actions" *ngIf="isOwnProfile()">
+        <button class="btn-primary" (click)="saveProfile()" [disabled]="saving()">Save Coding Profiles</button>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="profile-section" *ngIf="isOwnProfile()">
+      <h2 class="section-title">Projects</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="item-list">
+          <div class="item-card" *ngFor="let p of projects()">
+            <div class="item-content">
+              <h3 class="item-title">{{ p.title }}</h3>
+              <p class="item-desc">{{ p.description }}</p>
+              <div class="item-tags" *ngIf="p.technologies?.length">
+                <span class="skill-badge" *ngFor="let t of p.technologies">{{ t }}</span>
+              </div>
+              <div class="item-meta">
+                <span *ngIf="p.start_date">{{ p.start_date | date:'MMM yyyy' }}</span>
+                <span *ngIf="p.start_date && p.end_date"> &mdash; </span>
+                <span *ngIf="p.end_date">{{ p.end_date | date:'MMM yyyy' }}</span>
+                <a *ngIf="p.url" [href]="p.url" target="_blank" class="item-link">View</a>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="btn-icon" (click)="openEditProject(p)" title="Edit">✏️</button>
+              <button class="btn-icon" (click)="deleteProject(p.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="projects().length === 0 && !showProjectForm()">
+            <p>No projects added yet.</p>
+          </div>
+        </div>
+
+        <div class="inline-form" *ngIf="showProjectForm()">
+          <h3 class="form-title">{{ editingProjectId() ? 'Edit Project' : 'Add Project' }}</h3>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">Title *</label>
+              <input class="form-input" [(ngModel)]="projectForm.title" required />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Description</label>
+              <textarea class="form-input form-textarea" [(ngModel)]="projectForm.description" rows="3"></textarea>
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Technologies (comma-separated)</label>
+              <input class="form-input" [(ngModel)]="projectForm.technologies" placeholder="Angular, Node.js, MongoDB" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input class="form-input" [(ngModel)]="projectForm.start_date" type="date" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input class="form-input" [(ngModel)]="projectForm.end_date" type="date" />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">URL</label>
+              <input class="form-input" [(ngModel)]="projectForm.url" type="url" placeholder="https://github.com/username/project" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="saveProject()" [disabled]="!projectForm.title.trim()">Save</button>
+            <button class="btn-secondary" (click)="cancelProjectForm()">Cancel</button>
+          </div>
+        </div>
+
+        <button class="btn-gold" *ngIf="!showProjectForm()" (click)="openAddProject()">+ Add Project</button>
+      </div>
+    </section>
+
+    <!-- View-only projects -->
+    <section class="profile-section" *ngIf="!isOwnProfile() && profile()">
+      <h2 class="section-title">Projects</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="item-list">
+          <div class="item-card" *ngFor="let p of projects()">
+            <div class="item-content">
+              <h3 class="item-title">{{ p.title }}</h3>
+              <p class="item-desc">{{ p.description }}</p>
+              <div class="item-tags" *ngIf="p.technologies?.length">
+                <span class="skill-badge" *ngFor="let t of p.technologies">{{ t }}</span>
+              </div>
+              <div class="item-meta">
+                <span *ngIf="p.start_date">{{ p.start_date | date:'MMM yyyy' }}</span>
+                <span *ngIf="p.start_date && p.end_date"> &mdash; </span>
+                <span *ngIf="p.end_date">{{ p.end_date | date:'MMM yyyy' }}</span>
+                <a *ngIf="p.url" [href]="p.url" target="_blank" class="item-link">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CERTIFICATIONS ========== -->
+    <section class="profile-section" *ngIf="isOwnProfile()">
+      <h2 class="section-title">Certifications</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="item-list">
+          <div class="item-card" *ngFor="let c of certifications()">
+            <div class="item-content">
+              <h3 class="item-title">{{ c.name }}</h3>
+              <p class="item-subtitle">{{ c.issuer }}</p>
+              <div class="item-meta">
+                <span *ngIf="c.issue_date">Issued: {{ c.issue_date | date:'MMM yyyy' }}</span>
+                <span *ngIf="c.expiry_date"> &middot; Expires: {{ c.expiry_date | date:'MMM yyyy' }}</span>
+                <a *ngIf="c.credential_url" [href]="c.credential_url" target="_blank" class="item-link">Credential</a>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="btn-icon" (click)="openEditCert(c)" title="Edit">✏️</button>
+              <button class="btn-icon" (click)="deleteCertification(c.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="certifications().length === 0 && !showCertForm()">
+            <p>No certifications added yet.</p>
+          </div>
+        </div>
+
+        <div class="inline-form" *ngIf="showCertForm()">
+          <h3 class="form-title">{{ editingCertId() ? 'Edit Certification' : 'Add Certification' }}</h3>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">Name *</label>
+              <input class="form-input" [(ngModel)]="certForm.name" required />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Issuer</label>
+              <input class="form-input" [(ngModel)]="certForm.issuer" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Issue Date</label>
+              <input class="form-input" [(ngModel)]="certForm.issue_date" type="date" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Expiry Date</label>
+              <input class="form-input" [(ngModel)]="certForm.expiry_date" type="date" />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Credential URL</label>
+              <input class="form-input" [(ngModel)]="certForm.credential_url" type="url" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="saveCertification()" [disabled]="!certForm.name.trim()">Save</button>
+            <button class="btn-secondary" (click)="cancelCertForm()">Cancel</button>
+          </div>
+        </div>
+
+        <button class="btn-gold" *ngIf="!showCertForm()" (click)="openAddCert()">+ Add Certification</button>
+      </div>
+    </section>
+
+    <!-- ========== ACHIEVEMENTS ========== -->
+    <section class="profile-section" *ngIf="isOwnProfile()">
+      <h2 class="section-title">Achievements</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="item-list">
+          <div class="item-card" *ngFor="let a of achievements()">
+            <div class="item-content">
+              <h3 class="item-title">{{ a.title }}</h3>
+              <p class="item-desc">{{ a.description }}</p>
+              <span class="item-meta" *ngIf="a.date">{{ a.date | date:'MMM yyyy' }}</span>
+            </div>
+            <div class="item-actions">
+              <button class="btn-icon" (click)="openEditAchievement(a)" title="Edit">✏️</button>
+              <button class="btn-icon" (click)="deleteAchievement(a.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="achievements().length === 0 && !showAchievementForm()">
+            <p>No achievements added yet.</p>
+          </div>
+        </div>
+
+        <div class="inline-form" *ngIf="showAchievementForm()">
+          <h3 class="form-title">{{ editingAchievementId() ? 'Edit Achievement' : 'Add Achievement' }}</h3>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">Title *</label>
+              <input class="form-input" [(ngModel)]="achievementForm.title" required />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Description</label>
+              <textarea class="form-input form-textarea" [(ngModel)]="achievementForm.description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input class="form-input" [(ngModel)]="achievementForm.date" type="date" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="saveAchievement()" [disabled]="!achievementForm.title.trim()">Save</button>
+            <button class="btn-secondary" (click)="cancelAchievementForm()">Cancel</button>
+          </div>
+        </div>
+
+        <button class="btn-gold" *ngIf="!showAchievementForm()" (click)="openAddAchievement()">+ Add Achievement</button>
+      </div>
+    </section>
+
+    <!-- ========== INTERNSHIPS ========== -->
+    <section class="profile-section" *ngIf="isOwnProfile()">
+      <h2 class="section-title">Internships</h2>
+      <div class="gold-divider"></div>
+      <div class="section-body">
+        <div class="item-list">
+          <div class="item-card" *ngFor="let i of internships()">
+            <div class="item-content">
+              <h3 class="item-title">{{ i.role }} &#64; {{ i.company }}</h3>
+              <p class="item-desc">{{ i.description }}</p>
+              <div class="item-meta">
+                <span *ngIf="i.start_date">{{ i.start_date | date:'MMM yyyy' }}</span>
+                <span *ngIf="i.start_date && i.end_date"> &mdash; </span>
+                <span *ngIf="i.end_date">{{ i.end_date | date:'MMM yyyy' }}</span>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="btn-icon" (click)="openEditInternship(i)" title="Edit">✏️</button>
+              <button class="btn-icon" (click)="deleteInternship(i.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="internships().length === 0 && !showInternshipForm()">
+            <p>No internships added yet.</p>
+          </div>
+        </div>
+
+        <div class="inline-form" *ngIf="showInternshipForm()">
+          <h3 class="form-title">{{ editingInternshipId() ? 'Edit Internship' : 'Add Internship' }}</h3>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">Company *</label>
+              <input class="form-input" [(ngModel)]="internshipForm.company" required />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Role</label>
+              <input class="form-input" [(ngModel)]="internshipForm.role" />
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">Description</label>
+              <textarea class="form-input form-textarea" [(ngModel)]="internshipForm.description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input class="form-input" [(ngModel)]="internshipForm.start_date" type="date" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input class="form-input" [(ngModel)]="internshipForm.end_date" type="date" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" (click)="saveInternship()" [disabled]="!internshipForm.company.trim()">Save</button>
+            <button class="btn-secondary" (click)="cancelInternshipForm()">Cancel</button>
+          </div>
+        </div>
+
+        <button class="btn-gold" *ngIf="!showInternshipForm()" (click)="openAddInternship()">+ Add Internship</button>
+      </div>
+    </section>
+
+    <!-- View-only: load and show read-only sections -->
+    <ng-container *ngIf="!isOwnProfile()">
+      <section class="profile-section">
+        <h2 class="section-title">Certifications</h2>
+        <div class="gold-divider"></div>
+        <div class="section-body">
+          <div class="item-list">
+            <div class="item-card" *ngFor="let c of certifications()">
+              <div class="item-content">
+                <h3 class="item-title">{{ c.name }}</h3>
+                <p class="item-subtitle">{{ c.issuer }}</p>
+                <div class="item-meta">
+                  <span *ngIf="c.issue_date">Issued: {{ c.issue_date | date:'MMM yyyy' }}</span>
+                  <a *ngIf="c.credential_url" [href]="c.credential_url" target="_blank" class="item-link">Credential</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-section">
+        <h2 class="section-title">Achievements</h2>
+        <div class="gold-divider"></div>
+        <div class="section-body">
+          <div class="item-list">
+            <div class="item-card" *ngFor="let a of achievements()">
+              <div class="item-content">
+                <h3 class="item-title">{{ a.title }}</h3>
+                <p class="item-desc">{{ a.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="profile-section">
+        <h2 class="section-title">Internships</h2>
+        <div class="gold-divider"></div>
+        <div class="section-body">
+          <div class="item-list">
+            <div class="item-card" *ngFor="let i of internships()">
+              <div class="item-content">
+                <h3 class="item-title">{{ i.role }} &#64; {{ i.company }}</h3>
+                <p class="item-desc">{{ i.description }}</p>
+                <div class="item-meta">
+                  <span *ngIf="i.start_date">{{ i.start_date | date:'MMM yyyy' }}</span>
+                  <span *ngIf="i.start_date && i.end_date"> &mdash; </span>
+                  <span *ngIf="i.end_date">{{ i.end_date | date:'MMM yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </ng-container>
+</div>

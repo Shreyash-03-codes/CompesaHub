@@ -1,0 +1,72 @@
+<div class="admin-dashboard">
+  <header class="admin-header">
+    <h1 class="admin-header__title">Admin Dashboard</h1>
+    <hr class="gold-divider" />
+  </header>
+
+  @if (!isAdmin) {
+    <div class="access-denied">
+      <p>You do not have administrator access.</p>
+    </div>
+  } @else {
+    <nav class="admin-tabs">
+      <button class="admin-tabs__btn" [class.active]="activeTab === 'dashboard'" (click)="setTab('dashboard')">Dashboard</button>
+      <button class="admin-tabs__btn" [class.active]="activeTab === 'users'" (click)="setTab('users')">User Management</button>
+      <button class="admin-tabs__btn" [class.active]="activeTab === 'tests'" (click)="setTab('tests')">Assessment & DSA</button>
+      <button class="admin-tabs__btn" [class.active]="activeTab === 'content'" (click)="setTab('content')">Content Management</button>
+    </nav>
+
+    @if (activeTab === 'dashboard') {
+      <section class="stats-grid">
+        <app-stat-counter [targetValue]="totalStudents" label="Total Students" suffix="+"></app-stat-counter>
+        <app-stat-counter [targetValue]="totalTests" label="Assessments Created"></app-stat-counter>
+        <app-stat-counter [targetValue]="totalNews" label="News Articles"></app-stat-counter>
+        <app-stat-counter [targetValue]="totalCommittee" label="Committee Members"></app-stat-counter>
+      </section>
+
+      <section class="quick-links">
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="quick-links__grid">
+          <a class="quick-link-card" routerLink="/admin/dsa-grading">
+            <span class="quick-link-card__icon">📊</span>
+            <span class="quick-link-card__label">DSA Grading</span>
+          </a>
+          <a class="quick-link-card" routerLink="/admin/analytics">
+            <span class="quick-link-card__icon">📈</span>
+            <span class="quick-link-card__label">Analytics</span>
+          </a>
+          <button class="quick-link-card" (click)="setTab('users')">
+            <span class="quick-link-card__icon">👤</span>
+            <span class="quick-link-card__label">Add Users</span>
+          </button>
+          <button class="quick-link-card" (click)="setTab('tests')">
+            <span class="quick-link-card__icon">📝</span>
+            <span class="quick-link-card__label">Create Test</span>
+          </button>
+        </div>
+      </section>
+    }
+
+    @if (activeTab === 'users') {
+      <app-user-manager></app-user-manager>
+    }
+
+    @if (activeTab === 'tests') {
+      <app-test-manager></app-test-manager>
+    }
+
+    @if (activeTab === 'content') {
+      <section class="content-links">
+        <h2 class="section-title">Module Content Management</h2>
+        <div class="content-links__grid">
+          @for (link of contentLinks; track link.route) {
+            <a class="content-link-card" [routerLink]="link.route">
+              <span class="content-link-card__icon">{{ link.icon }}</span>
+              <span class="content-link-card__label">{{ link.label }}</span>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

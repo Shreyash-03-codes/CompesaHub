@@ -1,0 +1,30 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed()">
+  <div class="sidebar__user-section">
+    <div class="sidebar__user-avatar">{{ userInitial }}</div>
+    <div class="sidebar__user-info">
+      <div class="sidebar__user-name">{{ displayName }}</div>
+      <div class="sidebar__user-email">{{ user?.email }}</div>
+    </div>
+    <button class="sidebar__toggle" (click)="toggleCollapse()" aria-label="Toggle sidebar">
+      {{ isCollapsed() ? '▶' : '◀' }}
+    </button>
+  </div>
+
+  <nav class="sidebar__nav">
+    <ng-container *ngFor="let group of filteredGroups">
+      <div class="sidebar__group">
+        <span class="sidebar__group-label">{{ group.label }}</span>
+        <a
+          *ngFor="let link of group.links"
+          class="sidebar__link"
+          [routerLink]="link.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: link.route === '/dashboard' }"
+        >
+          <span class="sidebar__link-icon">{{ link.icon }}</span>
+          <span class="sidebar__link-label">{{ link.label }}</span>
+        </a>
+      </div>
+    </ng-container>
+  </nav>
+</aside>

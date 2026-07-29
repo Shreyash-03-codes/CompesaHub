@@ -1,0 +1,168 @@
+<div class="test-manager">
+  <div class="test-manager__toolbar">
+    <button class="btn-primary" (click)="startCreate()">+ New Test</button>
+  </div>
+
+  @if (editingTest !== undefined) {
+    <div class="test-editor">
+      <h3 class="section-title">{{ editingTest ? 'Edit Test' : 'Create Test' }}</h3>
+      <form [formGroup]="testForm" (ngSubmit)="saveTest()" class="test-form">
+        <div class="form-row">
+          <div class="field">
+            <label class="field-label">Title</label>
+            <input class="field-input" formControlName="title" placeholder="Weekly Test 1" />
+          </div>
+          <div class="field">
+            <label class="field-label">Type</label>
+            <select class="field-input" formControlName="type">
+              <option value="weekly">Weekly</option>
+              <option value="company_pattern">Company Pattern</option>
+              <option value="topic">Topic</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Description</label>
+          <textarea class="field-input" formControlName="description" rows="2"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Topic Tags (comma-separated)</label>
+          <input class="field-input" formControlName="topic_tags" placeholder="Arrays, Strings, DP" />
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label class="field-label">Start Time</label>
+            <input class="field-input" type="datetime-local" formControlName="start_time" />
+          </div>
+          <div class="field">
+            <label class="field-label">End Time</label>
+            <input class="field-input" type="datetime-local" formControlName="end_time" />
+          </div>
+          <div class="field">
+            <label class="field-label">Duration (min)</label>
+            <input class="field-input" type="number" formControlName="duration_minutes" min="1" />
+          </div>
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" formControlName="is_published" />
+          <span>Published</span>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="testForm.invalid">{{ editingTest ? 'Update Test' : 'Create Test' }}</button>
+          <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+
+      @if (editingTest) {
+        <div class="questions-section">
+          <div class="questions-section__header">
+            <h4 class="section-title">Questions</h4>
+            <button class="btn-primary" (click)="startAddQuestion()">+ Add Question</button>
+          </div>
+
+          @if (editingQuestion !== null) {
+            <div class="question-editor">
+              <h5>{{ editingQuestion ? 'Edit Question' : 'New Question' }}</h5>
+              <form [formGroup]="questionForm" (ngSubmit)="saveQuestion()" class="question-form">
+                <div class="field">
+                  <label class="field-label">Question Text</label>
+                  <textarea class="field-input" formControlName="question_text" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="field">
+                    <label class="field-label">Type</label>
+                    <select class="field-input" formControlName="question_type">
+                      <option value="mcq">Multiple Choice</option>
+                      <option value="code_display">Code Display</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Points</label>
+                    <input class="field-input" type="number" formControlName="points" min="1" />
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Order</label>
+                    <input class="field-input" type="number" formControlName="order" />
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Topic Tag</label>
+                    <input class="field-input" formControlName="topic_tag" />
+                  </div>
+                </div>
+
+                @if (questionForm.controls.question_type.value === 'code_display') {
+                  <div class="field">
+                    <label class="field-label">Code Snippet</label>
+                    <textarea class="field-input field-input--mono" formControlName="code_snippet" rows="5"></textarea>
+                  </div>
+                }
+
+                <div class="options-section">
+                  <label class="field-label">Options</label>
+                  @for (optCtrl of optionsArray.controls; track optCtrl; let i = $index) {
+                    <div class="option-row">
+                      <input type="checkbox" [formControl]="$any(correctOptionsArray.at(i))" class="option-correct" />
+                      <input class="field-input" [formControl]="$any(optCtrl)" placeholder="Option {{ i + 1 }}" />
+                      <button type="button" class="btn-icon remove" (click)="removeOption(i)">✕</button>
+                    </div>
+                  }
+                  <button type="button" class="btn-secondary btn-sm" (click)="addOption()">+ Add Option</button>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary" [disabled]="questionForm.invalid">Save Question</button>
+                  <button type="button" class="btn-secondary" (click)="cancelQuestionEdit()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          }
+
+          <div class="questions-list">
+            @for (q of selectedTestQuestions; track q.id) {
+              <div class="question-card">
+                <div class="question-card__header">
+                  <span class="question-card__order">Q{{ q.order + 1 }}.</span>
+                  <span class="question-card__text">{{ q.question_text }}</span>
+                  <span class="badge" [class.badge-mcq]="q.question_type === 'mcq'" [class.badge-code]="q.question_type === 'code_display'">{{ q.question_type }}</span>
+                  <span class="question-card__points">{{ q.points }}pt</span>
+                </div>
+                <div class="question-card__actions">
+                  <button class="btn-secondary btn-sm" (click)="startEditQuestion(q)">Edit</button>
+                  <button class="btn-danger btn-sm" (click)="deleteQuestion(q.id)">Delete</button>
+                </div>
+              </div>
+            } @empty {
+              <p class="empty-state">No questions yet.</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="tests-list">
+    <h3 class="section-title">Existing Tests</h3>
+    @for (test of tests; track test.id) {
+      <div class="test-card" [class.editing]="editingTest?.id === test.id">
+        <div class="test-card__info">
+          <span class="test-card__title">{{ test.title }}</span>
+          <span class="badge badge-type">{{ test.type }}</span>
+          <span class="test-card__meta">{{ test.start_time | date:'mediumDate' }} – {{ test.end_time | date:'mediumDate' }} ({{ test.duration_minutes }}min)</span>
+          <span class="test-card__questions">{{ test.total_questions || 0 }} questions</span>
+        </div>
+        <div class="test-card__actions">
+          <button class="btn-secondary btn-sm" (click)="startEdit(test)">Edit</button>
+          <button class="btn-danger btn-sm" (click)="deleteTest(test.id)">Delete</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-state">No tests created yet.</p>
+    }
+  </div>
+</div>

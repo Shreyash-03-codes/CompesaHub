@@ -1,0 +1,265 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  @include page-container;
+  max-width: 1400px;
+}
+
+.page-header {
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    @include section-title;
+  }
+
+  p {
+    @include text-body;
+  }
+}
+
+.contest-selector {
+  margin-bottom: $spacing-xl;
+
+  select {
+    @include input-field;
+    max-width: 400px;
+  }
+}
+
+.grading-layout {
+  display: flex;
+  gap: $spacing-lg;
+  height: calc(100vh - 220px);
+  min-height: 500px;
+
+  .left-panel {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    overflow-y: auto;
+  }
+
+  .center-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .right-panel {
+    width: 300px;
+    overflow-y: auto;
+  }
+}
+
+.section-card {
+  @include card-flat;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  h4 {
+    font-size: 0.9rem;
+    margin-bottom: $spacing-sm;
+    font-family: $font-sans;
+    color: $primary-navy;
+  }
+}
+
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  .problem-item {
+    padding: $spacing-sm;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $dark-gray;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: rgba($accent-gold, 0.08);
+    }
+
+    &.active {
+      background: rgba($accent-gold, 0.15);
+      color: $primary-navy;
+      font-weight: 600;
+    }
+  }
+}
+
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  .submission-item {
+    padding: $spacing-sm;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $dark-gray;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: rgba($accent-gold, 0.08);
+    }
+
+    &.active {
+      background: rgba($accent-gold, 0.15);
+      color: $primary-navy;
+      font-weight: 600;
+    }
+
+    .submission-meta {
+      @include text-small;
+    }
+
+    .graded-badge {
+      @include badge-green;
+      font-size: 0.7rem;
+      margin-left: $spacing-sm;
+    }
+
+    .ungraded-badge {
+      @include badge;
+      background: rgba($warning, 0.15);
+      color: $warning;
+      font-size: 0.7rem;
+      margin-left: $spacing-sm;
+    }
+  }
+}
+
+.code-viewer {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  .editor-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.problem-statement {
+  margin-bottom: $spacing-md;
+
+  .statement-content {
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: $dark-gray;
+    white-space: pre-wrap;
+    background: $off-white;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    border: 1px solid $light-gray;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+.grading-form {
+  @include card;
+  padding: $spacing-lg;
+
+  h4 {
+    font-size: 1rem;
+    margin-bottom: $spacing-md;
+  }
+
+  .form-group {
+    margin-bottom: $spacing-md;
+
+    label {
+      @include label;
+    }
+
+    input {
+      @include input-field;
+    }
+
+    textarea {
+      @include input-field;
+      resize: vertical;
+      min-height: 80px;
+      font-family: $font-sans;
+    }
+  }
+
+  button {
+    @include btn-primary;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.totals-section {
+  margin-top: $spacing-xl;
+
+  h3 {
+    font-size: 1.125rem;
+    margin-bottom: $spacing-md;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: $spacing-sm $spacing-md;
+      text-align: left;
+      font-family: $font-sans;
+      font-size: 0.85rem;
+      border-bottom: 1px solid $light-gray;
+    }
+
+    th {
+      font-weight: 600;
+      color: $medium-gray;
+    }
+
+    td {
+      color: $dark-gray;
+    }
+
+    .rank {
+      font-weight: 700;
+      color: $accent-gold-dark;
+      width: 40px;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-3xl;
+  color: $medium-gray;
+  font-family: $font-sans;
+}
+
+@include respond-lg {
+  .grading-layout {
+    flex-direction: column;
+    height: auto;
+
+    .left-panel,
+    .right-panel {
+      width: 100%;
+    }
+
+    .code-viewer {
+      height: 400px;
+    }
+  }
+}

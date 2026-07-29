@@ -1,0 +1,236 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.test-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.test-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  background: $white;
+  border-bottom: 1px solid $light-gray;
+
+  .test-title {
+    h3 {
+      margin: 0;
+      font-size: 1.125rem;
+    }
+
+    small {
+      @include text-small;
+    }
+  }
+
+  .test-timer {
+    font-family: $font-mono;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $primary-maroon;
+
+    &.warning {
+      color: $danger;
+      animation: goldPulse 1s infinite;
+    }
+  }
+
+  .submit-all-btn {
+    @include btn-primary;
+  }
+}
+
+.test-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.question-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-lg $spacing-xl;
+}
+
+.question-number {
+  @include text-small;
+  color: $medium-gray;
+  margin-bottom: $spacing-xs;
+}
+
+.question-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: $near-black;
+  margin-bottom: $spacing-lg;
+  font-family: $font-sans;
+}
+
+.code-snippet {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: $font-mono;
+  font-size: 0.85rem;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  overflow-x: auto;
+  margin-bottom: $spacing-lg;
+  white-space: pre-wrap;
+}
+
+.monaco-wrapper {
+  height: 300px;
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  overflow: hidden;
+  margin-bottom: $spacing-lg;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $light-gray;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: $accent-gold;
+      background: rgba($accent-gold, 0.05);
+    }
+
+    &.selected {
+      border-color: $accent-gold;
+      background: rgba($accent-gold, 0.1);
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      accent-color: $accent-gold;
+      width: 18px;
+      height: 18px;
+    }
+
+    .option-label {
+      font-family: $font-sans;
+      font-size: 0.95rem;
+      color: $dark-gray;
+    }
+  }
+}
+
+.question-nav-panel {
+  width: 240px;
+  border-left: 1px solid $light-gray;
+  background: $off-white;
+  padding: $spacing-lg;
+  overflow-y: auto;
+
+  h4 {
+    font-size: 0.9rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-md;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+  }
+
+  .nav-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid $light-gray;
+    border-radius: $radius-sm;
+    background: $white;
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all $transition-fast;
+    color: $dark-gray;
+
+    &.active {
+      background: $accent-gold;
+      color: $white;
+      border-color: $accent-gold;
+    }
+
+    &.answered {
+      background: rgba($success, 0.1);
+      border-color: $success;
+      color: $success;
+    }
+
+    &:hover {
+      border-color: $accent-gold;
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    button {
+      @include btn-secondary;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.submitted-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: $off-white;
+
+  .submitted-message {
+    text-align: center;
+
+    h2 {
+      @include section-title;
+    }
+
+    p {
+      @include text-body;
+    }
+  }
+}
+
+@include respond-md {
+  .question-nav-panel {
+    width: 180px;
+  }
+}
+
+@include respond-sm {
+  .test-body {
+    flex-direction: column;
+  }
+
+  .question-nav-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid $light-gray;
+  }
+}

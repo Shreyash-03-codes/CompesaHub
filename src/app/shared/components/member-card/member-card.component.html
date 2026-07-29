@@ -1,0 +1,23 @@
+<div class="member-card" (click)="cardClick.emit()">
+  <div class="member-card__photo">
+    <ng-container *ngIf="photoUrl(); else placeholder">
+      <img [src]="photoUrl()" [alt]="name()" loading="lazy" />
+    </ng-container>
+    <ng-template #placeholder>
+      <div class="member-card__photo-placeholder">{{ initials }}</div>
+    </ng-template>
+
+    <span *ngIf="isFacultyCoordinator()" class="member-card__coordinator-badge">Faculty Coordinator</span>
+    <span *ngIf="role()" class="member-card__badge">{{ role() }}</span>
+
+    <div class="member-card__overlay" *ngIf="bio()">
+      <p class="member-card__overlay-text">{{ bio() }}</p>
+    </div>
+  </div>
+
+  <div class="member-card__info">
+    <h3 class="member-card__name">{{ name() }}</h3>
+    <p class="member-card__role">{{ role() }}</p>
+    <p class="member-card__bio" *ngIf="bio() && !bio()">{{ bio() }}</p>
+  </div>
+</div>

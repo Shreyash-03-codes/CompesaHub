@@ -1,0 +1,121 @@
+<div class="page-header">
+  <h2>DSA Grading Panel</h2>
+  <p>Grade student submissions and track leaderboards.</p>
+</div>
+
+<div class="contest-selector">
+  <select [value]="selectedContestId" (change)="selectContest($any($event.target).value)">
+    <option value="">— Select a Contest —</option>
+    <option *ngFor="let c of contests" [value]="c.id">{{ c.title }}</option>
+  </select>
+</div>
+
+<div *ngIf="loading" class="empty-state">Loading…</div>
+
+<ng-container *ngIf="!loading && activeView">
+  <div class="grading-layout">
+    <div class="left-panel">
+      <div class="section-card">
+        <h4>Problems</h4>
+        <div class="problem-list">
+          <div
+            *ngFor="let p of activeView.problems"
+            class="problem-item"
+            [class.active]="activeView.selectedProblem?.id === p.id"
+            (click)="selectProblem(p)"
+          >
+            {{ p.title }}
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h4>Submissions ({{ activeView.selectedProblem?.title || 'N/A' }})</h4>
+        <div class="submission-list" *ngIf="activeView.submissions.length > 0; else noSubs">
+          <div
+            *ngFor="let sub of activeView.submissions"
+            class="submission-item"
+            [class.active]="activeView.selectedSubmission?.id === sub.id"
+            (click)="selectSubmission(sub)"
+          >
+            <div>{{ getUserName(sub) }}</div>
+            <div class="submission-meta">
+              {{ sub.language | titlecase }}
+              <span class="graded-badge" *ngIf="sub.is_graded">Graded</span>
+              <span class="ungraded-badge" *ngIf="!sub.is_graded">Pending</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noSubs>
+          <p class="empty-state">No submissions for this problem.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="center-panel">
+      <div class="section-card" *ngIf="activeView.selectedProblem">
+        <h4>Problem: {{ activeView.selectedProblem.title }}</h4>
+        <div class="problem-statement">
+          <div class="statement-content">{{ activeView.selectedProblem.problem_statement }}</div>
+        </div>
+      </div>
+
+      <div class="code-viewer">
+        <div #codeViewer class="editor-wrapper"></div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="grading-form" *ngIf="activeView.selectedSubmission">
+        <h4>Grade Submission</h4>
+        <div class="form-group">
+          <label for="score">Score (out of {{ selectedProblemMaxPoints }})</label>
+          <input id="score" type="number" [min]="0" [max]="selectedProblemMaxPoints" [(ngModel)]="activeView.scoreInput" />
+        </div>
+        <div class="form-group">
+          <label for="remarks">Remarks</label>
+          <textarea id="remarks" [(ngModel)]="activeView.remarksInput" placeholder="Optional remarks…"></textarea>
+        </div>
+        <button (click)="saveGrade()" [disabled]="activeView.saving">
+          {{ activeView.saving ? 'Saving…' : 'Save Grade' }}
+        </button>
+      </div>
+
+      <div class="grading-form" *ngIf="!activeView.selectedSubmission">
+        <p class="empty-state">Select a submission to grade.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="totals-section" *ngIf="studentTotals.length > 0">
+    <h3>Leaderboard</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>PRN</th>
+          <th>Total Score</th>
+          <th>Max Score</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of studentTotals; let i = index">
+          <td class="rank">{{ i + 1 }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.prn }}</td>
+          <td>{{ s.totalScore }}</td>
+          <td>{{ s.maxScore }}</td>
+          <td>{{ s.maxScore > 0 ? (s.totalScore / s.maxScore * 100 | number:'1.0-0') : 0 }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!loading && !activeView">
+  <div class="empty-state">
+    <p>Select a contest above to start grading.</p>
+  </div>
+</ng-container>

@@ -1,0 +1,280 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.test-manager {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__toolbar {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.section-title {
+  @include section-title;
+  font-size: 1.15rem;
+}
+
+.test-editor {
+  @include card;
+  padding: $spacing-xl;
+}
+
+.test-form,
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: 800px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $spacing-md;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  @include label;
+}
+
+.field-input {
+  @include input-field;
+
+  &--mono {
+    font-family: $font-mono;
+    font-size: 0.85rem;
+  }
+}
+
+textarea.field-input {
+  resize: vertical;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $dark-gray;
+  cursor: pointer;
+
+  input {
+    accent-color: $accent-gold;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+}
+
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.btn-sm {
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.8rem;
+}
+
+.btn-danger {
+  @include btn-secondary;
+  border-color: $danger;
+  color: $danger;
+
+  &:hover {
+    background: $danger;
+    color: $white;
+  }
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: $spacing-xs;
+  color: $medium-gray;
+
+  &:hover {
+    color: $danger;
+  }
+}
+
+.questions-section {
+  margin-top: $spacing-2xl;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.question-editor {
+  @include card-flat;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  border-left: 3px solid $accent-gold;
+}
+
+.options-section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  .option-correct {
+    accent-color: $success;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.question-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $accent-gold-light;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__order {
+    font-family: $font-mono;
+    font-weight: 700;
+    color: $accent-gold-dark;
+    font-size: 0.85rem;
+  }
+
+  &__text {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    color: $near-black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__points {
+    font-family: $font-mono;
+    font-size: 0.8rem;
+    color: $medium-gray;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-xs;
+    margin-left: $spacing-md;
+  }
+}
+
+.badge {
+  @include badge;
+  font-size: 0.7rem;
+
+  &.badge-mcq {
+    @include badge-maroon;
+  }
+
+  &.badge-code {
+    @include badge-gold;
+  }
+
+  &.badge-type {
+    @include badge-green;
+  }
+}
+
+.tests-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.test-card {
+  @include card;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+
+  &.editing {
+    border-color: $accent-gold;
+    box-shadow: $shadow-gold;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    @include heading-sans;
+    font-size: 0.95rem;
+    color: $primary-navy;
+  }
+
+  &__meta {
+    @include text-small;
+  }
+
+  &__questions {
+    @include text-small;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-xs;
+  }
+}
+
+.empty-state {
+  @include text-body;
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $medium-gray;
+}

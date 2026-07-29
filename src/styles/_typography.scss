@@ -1,0 +1,44 @@
+@use 'variables' as *;
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $primary-navy;
+  margin: 0 0 $spacing-sm;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.375rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+p {
+  font-family: $font-sans;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: $dark-gray;
+  margin: 0 0 $spacing-md;
+}
+
+a {
+  color: $primary-maroon;
+  text-decoration: none;
+  transition: color $transition-fast;
+  &:hover {
+    color: $accent-gold-dark;
+    text-decoration: underline;
+  }
+}
+
+small {
+  font-family: $font-sans;
+  font-size: 0.825rem;
+  color: $medium-gray;
+}
+
+strong, b {
+  font-weight: 600;
+}

@@ -1,0 +1,107 @@
+<div class="search-notifications">
+  <header class="sn-header">
+    <div class="search-bar">
+      <div class="search-bar__input-wrap">
+        <span class="search-bar__icon">🔍</span>
+        <input
+          class="search-bar__input"
+          type="text"
+          placeholder="Search students, news, committee members\u2026"
+          [formControl]="searchControl"
+          (input)="onSearchInput()"
+        />
+        @if (searchControl.value) {
+          <button class="search-bar__clear" (click)="clearSearch()">✕</button>
+        }
+      </div>
+    </div>
+
+    <div class="notifications-toggle">
+      <button class="notif-btn" (click)="toggleNotifications()">
+        <span class="notif-btn__icon">🔔</span>
+        @if (unreadCount > 0) {
+          <span class="notif-btn__badge">{{ unreadCount }}</span>
+        }
+      </button>
+      @if (showNotifications) {
+        <div class="notif-panel">
+          <div class="notif-panel__header">
+            <h4>Notifications</h4>
+          </div>
+          <div class="notif-panel__list">
+            @for (n of notifications; track n.id) {
+              <div class="notif-item" [class.unread]="!n.is_read">
+                <div class="notif-item__content">
+                  <strong>{{ n.title }}</strong>
+                  <p>{{ n.message }}</p>
+                </div>
+                <div class="notif-item__actions">
+                  @if (!n.is_read) {
+                    <button class="btn-mark-read" (click)="markAsRead(n.id)">Mark read</button>
+                  }
+                  @if (n.link) {
+                    <a class="notif-link" [routerLink]="n.link">View</a>
+                  }
+                </div>
+              </div>
+            } @empty {
+              <p class="notif-empty">No notifications</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </header>
+
+  @if (hasSearched && searchResults) {
+    <div class="search-results">
+      @if (searchResults.students.length > 0) {
+        <section class="result-group">
+          <h3 class="result-group__title">Students ({{ searchResults.students.length }})</h3>
+          <div class="result-list">
+            @for (s of searchResults.students; track s.id) {
+              <a class="result-item" [routerLink]="['/profile', s.id]">
+                <span class="result-item__name">{{ s.name }}</span>
+                <span class="result-item__meta">{{ s.prn }} · {{ s.class }} · {{ s.batch }}</span>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      @if (searchResults.news.length > 0) {
+        <section class="result-group">
+          <h3 class="result-group__title">News ({{ searchResults.news.length }})</h3>
+          <div class="result-list">
+            @for (item of searchResults.news; track item.id) {
+              <a class="result-item" [routerLink]="['/news', item.id]">
+                <span class="result-item__name">{{ item.title }}</span>
+                <span class="result-item__meta">{{ item.type }}</span>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      @if (searchResults.committee.length > 0) {
+        <section class="result-group">
+          <h3 class="result-group__title">Committee Members ({{ searchResults.committee.length }})</h3>
+          <div class="result-list">
+            @for (m of searchResults.committee; track m.id) {
+              <a class="result-item" [routerLink]="['/committee']">
+                <span class="result-item__name">{{ m.name }}</span>
+                <span class="result-item__meta">{{ m.role }}</span>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      @if (searchResults.students.length === 0 && searchResults.news.length === 0 && searchResults.committee.length === 0) {
+        <div class="no-results">
+          <p>No results found for "{{ searchControl.value }}".</p>
+        </div>
+      }
+    </div>
+  }
+</div>

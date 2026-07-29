@@ -1,0 +1,81 @@
+<div class="reports-analytics">
+  <header class="ra-header">
+    <h1 class="ra-header__title">Reports & Analytics</h1>
+    <hr class="gold-divider" />
+  </header>
+
+  <section class="metrics-grid">
+    <app-stat-counter [targetValue]="totalUsers" label="Total Users"></app-stat-counter>
+    <app-stat-counter [targetValue]="totalTests" label="Tests Created"></app-stat-counter>
+    <app-stat-counter [targetValue]="totalFeedback" label="Feedback Submissions"></app-stat-counter>
+    <app-stat-counter [targetValue]="totalNews" label="News Posted"></app-stat-counter>
+  </section>
+
+  <section class="chart-section">
+    <h2 class="section-title">Participation Rates</h2>
+    @if (participationData.length > 0) {
+      <div class="bar-chart">
+        @for (d of participationData; track d) {
+          <div class="bar-row">
+            <span class="bar-row__label">{{ d.testTitle }}</span>
+            <div class="bar-row__track">
+              <div
+                class="bar-row__fill"
+                [style.width.%]="(d.rate / maxParticipationRate) * 100"
+              ></div>
+            </div>
+            <span class="bar-row__value">{{ d.rate }}% ({{ d.participants }}/{{ d.totalStudents }})</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="empty-state">No participation data yet.</p>
+    }
+  </section>
+
+  <div class="charts-grid">
+    <section class="chart-section">
+      <h2 class="section-title">Score Trends</h2>
+      @if (scoreTrends.length > 0) {
+        <div class="bar-chart">
+          @for (d of scoreTrends; track d) {
+            <div class="bar-row">
+              <span class="bar-row__label">{{ d.testTitle }}</span>
+              <div class="bar-row__track">
+                <div
+                  class="bar-row__fill bar-row__fill--gold"
+                  [style.width.%]="(d.avgScore / maxScoreTrend) * 100"
+                ></div>
+              </div>
+              <span class="bar-row__value">{{ d.avgScore }} avg</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="empty-state">No score data yet.</p>
+      }
+    </section>
+
+    <section class="chart-section">
+      <h2 class="section-title">Topic-wise Weak Areas</h2>
+      @if (topicScores.length > 0) {
+        <div class="bar-chart">
+          @for (d of topicScores; track d.topic) {
+            <div class="bar-row">
+              <span class="bar-row__label">{{ d.topic }}</span>
+              <div class="bar-row__track">
+                <div
+                  class="bar-row__fill bar-row__fill--maroon"
+                  [style.width.%]="(d.avgScore / maxTopicScore) * 100"
+                ></div>
+              </div>
+              <span class="bar-row__value">{{ d.avgScore }} / {{ d.maxScore }}</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="empty-state">No topic data yet.</p>
+      }
+    </section>
+  </div>
+</div>

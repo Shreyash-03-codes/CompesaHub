@@ -1,0 +1,100 @@
+<header class="header">
+  <div class="header__container">
+    <a class="header__brand" routerLink="/">
+      <div class="header__logo">CH</div>
+      <div class="header__title-area">
+        <span class="header__sitcoe">SITCOE</span>
+        <span class="header__compesa">COMPESA <span>Hub</span></span>
+      </div>
+    </a>
+
+    <nav class="header__nav">
+      <a
+        *ngFor="let link of filteredNavLinks"
+        class="header__nav-link"
+        [routerLink]="link.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: link.route === '/' }"
+      >{{ link.label }}</a>
+    </nav>
+
+    <div class="header__actions">
+      <ng-container *ngIf="isLoggedIn; else loginBlock">
+        <div class="user-menu-container">
+          <button class="user-menu-trigger" (click)="toggleUserMenu()">
+            <ng-container *ngIf="profile?.photo_url; else avatarPlaceholder">
+              <img class="user-menu-trigger__avatar" [src]="profile?.photo_url" alt="Avatar" />
+            </ng-container>
+            <ng-template #avatarPlaceholder>
+              <div class="user-menu-trigger__avatar-placeholder">
+                {{ displayName.charAt(0).toUpperCase() }}
+              </div>
+            </ng-template>
+            <span class="user-menu-trigger__name">{{ displayName.split(' ')[0] }}</span>
+            <span class="user-menu-trigger__arrow" [class.open]="isUserMenuOpen()">&#9660;</span>
+          </button>
+
+          <div
+            *ngIf="isUserMenuOpen()"
+            class="user-dropdown"
+            @dropdownAnimation
+          >
+            <div class="user-dropdown__header">
+              <div class="user-dropdown__name">{{ displayName }}</div>
+              <div class="user-dropdown__email">{{ user?.email }}</div>
+            </div>
+            <a class="user-dropdown__item" routerLink="/profile" (click)="isUserMenuOpen.set(false)">My Profile</a>
+            <button class="user-dropdown__item" (click)="changePassword(); isUserMenuOpen.set(false)">Change Password</button>
+            <a class="user-dropdown__item" routerLink="/search" (click)="isUserMenuOpen.set(false)">Notifications</a>
+            <button class="user-dropdown__item user-dropdown__item--danger" (click)="logout()">Sign Out</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #loginBlock>
+        <a class="header__login-btn" routerLink="/auth/login">Sign In</a>
+      </ng-template>
+
+      <button
+        class="header__hamburger"
+        [class.open]="isMobileMenuOpen()"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div
+  class="mobile-menu"
+  *ngIf="isMobileMenuOpen()"
+  @mobileMenuAnimation
+>
+  <nav class="mobile-menu__nav">
+    <a
+      *ngFor="let link of filteredNavLinks"
+      class="mobile-menu__link"
+      [routerLink]="link.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: link.route === '/' }"
+      (click)="closeMobileMenu()"
+    >{{ link.label }}</a>
+
+    <ng-container *ngIf="isLoggedIn; else mobileLoginBlock">
+      <div class="mobile-menu__profile-section">
+        <div class="mobile-menu__user-name">{{ displayName }}</div>
+        <div class="mobile-menu__user-email">{{ user?.email }}</div>
+        <a class="mobile-menu__link" routerLink="/profile" (click)="closeMobileMenu()">My Profile</a>
+        <button class="mobile-menu__link" (click)="changePassword(); closeMobileMenu()" style="background:none;border:none;width:100%;text-align:left">Change Password</button>
+        <a class="mobile-menu__link" routerLink="/search" (click)="closeMobileMenu()">Notifications</a>
+        <button class="mobile-menu__logout" (click)="logout()">Sign Out</button>
+      </div>
+    </ng-container>
+
+    <ng-template #mobileLoginBlock>
+      <a class="mobile-menu__link mobile-menu__link--login" routerLink="/auth/login" (click)="closeMobileMenu()">Sign In</a>
+    </ng-template>
+  </nav>
+</div>

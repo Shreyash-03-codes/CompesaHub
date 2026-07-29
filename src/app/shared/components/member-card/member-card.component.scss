@@ -1,0 +1,110 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.member-card {
+  @include card;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    .member-card__overlay {
+      opacity: 1;
+    }
+    .member-card__photo img {
+      transform: scale(1.08);
+    }
+  }
+
+  &__photo {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    background: $light-gray;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+  }
+
+  &__photo-placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, $primary-navy, $primary-maroon);
+    font-family: $font-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $accent-gold;
+  }
+
+  &__badge {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-sm;
+    @include badge-gold;
+    z-index: 2;
+    font-size: 0.7rem;
+  }
+
+  &__coordinator-badge {
+    position: absolute;
+    top: $spacing-sm;
+    left: $spacing-sm;
+    @include badge-maroon;
+    z-index: 2;
+    font-size: 0.7rem;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba($primary-dark, 0.85) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity $transition-base;
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing-md;
+  }
+
+  &__overlay-text {
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    color: $white;
+    line-height: 1.4;
+  }
+
+  &__info {
+    padding: $spacing-md;
+  }
+
+  &__name {
+    font-family: $font-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: $primary-navy;
+    margin-bottom: 2px;
+  }
+
+  &__role {
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $accent-gold-dark;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__bio {
+    @include text-small;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

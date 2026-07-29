@@ -1,0 +1,186 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.sidebar {
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background: $primary-dark;
+  border-right: 1px solid rgba($accent-gold, 0.15);
+  overflow-y: auto;
+  z-index: 500;
+  transition: width $transition-base;
+
+  &.collapsed {
+    width: 64px;
+
+    .sidebar__group-label,
+    .sidebar__link-label,
+    .sidebar__user-name,
+    .sidebar__user-email,
+    .sidebar__toggle-text {
+      display: none;
+    }
+
+    .sidebar__user-info {
+      justify-content: center;
+    }
+
+    .sidebar__group {
+      padding: $spacing-sm $spacing-xs;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($accent-gold, 0.2);
+    border-radius: 2px;
+  }
+
+  &__user-section {
+    padding: $spacing-md;
+    border-bottom: 1px solid rgba($white, 0.08);
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $accent-gold;
+    color: $primary-dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  &__user-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__user-name {
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__user-email {
+    font-family: $font-sans;
+    font-size: 0.7rem;
+    color: $medium-gray;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__toggle {
+    background: none;
+    border: none;
+    color: $medium-gray;
+    cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: $radius-sm;
+    transition: all $transition-fast;
+    flex-shrink: 0;
+
+    &:hover {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.1);
+    }
+  }
+
+  &__nav {
+    padding: $spacing-md 0;
+  }
+
+  &__group {
+    margin-bottom: $spacing-xs;
+    padding: 0 $spacing-sm;
+  }
+
+  &__group-label {
+    font-family: $font-sans;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: $medium-gray;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: $spacing-md $spacing-md $spacing-xs;
+    display: block;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-md;
+    text-decoration: none;
+    color: rgba($white, 0.7);
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all $transition-fast;
+    white-space: nowrap;
+    position: relative;
+
+    &:hover {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.08);
+    }
+
+    &.active {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.12);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: $accent-gold;
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+
+  &__link-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  &__link-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Overlay for mobile when sidebar is open
+.sidebar-overlay {
+  display: none;
+}

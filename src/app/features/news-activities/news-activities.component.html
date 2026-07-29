@@ -1,0 +1,104 @@
+<div class="news-page">
+  <div class="news-page__header">
+    <div>
+      <h1 class="news-page__title">News &amp; Activities</h1>
+      <hr class="gold-divider" />
+      <p class="news-page__subtitle">Stay updated with the latest events, workshops, and announcements</p>
+    </div>
+    @if (isAdminOrCommittee) {
+      <button class="btn-primary" (click)="toggleAddForm()">
+        {{ showAddForm ? 'Cancel' : '+ Add News' }}
+      </button>
+    }
+  </div>
+
+  @if (showAddForm && isAdminOrCommittee) {
+    <div class="news-form-card">
+      <h2 class="news-form-card__title">Create News Item</h2>
+      <form [formGroup]="newsForm" (ngSubmit)="onSubmit()" class="news-form">
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Title</label>
+            <input type="text" formControlName="title" class="field-input" placeholder="Event title" />
+          </div>
+          <div class="field">
+            <label class="field-label">Type</label>
+            <select formControlName="type" class="field-input">
+              @for (t of newsTypes; track t.value) {
+                <option [value]="t.value">{{ t.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Date</label>
+            <input type="date" formControlName="event_date" class="field-input" />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Image URL</label>
+            <input type="text" formControlName="image_url" class="field-input" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Content</label>
+          <textarea formControlName="content" class="field-input field-input--textarea" rows="4" placeholder="Describe the event..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" [disabled]="newsForm.invalid || submitting">
+          {{ submitting ? 'Publishing...' : 'Publish News' }}
+        </button>
+      </form>
+    </div>
+  }
+
+  <div class="filter-bar">
+    <button
+      class="filter-btn"
+      [class.filter-btn--active]="activeFilter === 'all'"
+      (click)="setFilter('all')"
+    >All</button>
+    @for (t of newsTypes; track t.value) {
+      <button
+        class="filter-btn"
+        [class.filter-btn--active]="activeFilter === t.value"
+        (click)="setFilter(t.value)"
+      >{{ t.label }}</button>
+    }
+  </div>
+
+  <div class="news-grid">
+    @for (item of filteredItems; track item.id) {
+      <div class="news-card" style="animation-delay: {{ $index * 0.05 }}s">
+        @if (item.image_url) {
+          <div class="news-card__image">
+            <img [src]="item.image_url" [alt]="item.title" loading="lazy" />
+          </div>
+        }
+        <div class="news-card__body">
+          <div class="news-card__meta">
+            <span class="news-card__type-badge news-card__type-badge--{{ item.type }}">{{ typeLabel(item.type) }}</span>
+            <span class="news-card__date">{{ item.event_date | date:'mediumDate' }}</span>
+          </div>
+          <h3 class="news-card__title">{{ item.title }}</h3>
+          <p class="news-card__content" [class.news-card__content--expanded]="isExpanded(item.id)">
+            {{ item.content }}
+          </p>
+          @if (item.content.length > 150) {
+            <button class="news-card__toggle" (click)="toggleExpand(item.id)">
+              {{ isExpanded(item.id) ? 'Show less' : 'Read more' }}
+            </button>
+          }
+          @if (isAdminOrCommittee) {
+            <div class="news-card__actions">
+              <button class="btn-small btn-small--danger" (click)="deleteNews(item.id)">Delete</button>
+            </div>
+          }
+        </div>
+      </div>
+    } @empty {
+      <div class="news-empty">
+        <p>No news items yet.</p>
+      </div>
+    }
+  </div>
+</div>

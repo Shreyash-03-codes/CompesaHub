@@ -1,0 +1,387 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: $header-height;
+  background: linear-gradient(135deg, $primary-dark 0%, $primary-navy 100%);
+  border-bottom: 2px solid $accent-gold;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    text-decoration: none;
+  }
+
+  &__logo {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-sm;
+    background: $accent-gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: $primary-dark;
+    flex-shrink: 0;
+  }
+
+  &__title-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__sitcoe {
+    font-family: $font-sans;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: $accent-gold-light;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+
+  &__compesa {
+    font-family: $font-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $white;
+    line-height: 1.2;
+
+    span {
+      color: $accent-gold;
+    }
+  }
+
+  &__tagline {
+    display: none;
+
+    @include respond-lg {
+      display: block;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    @include respond-md {
+      display: none;
+    }
+  }
+
+  &__nav-link {
+    padding: $spacing-sm $spacing-md;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba($white, 0.8);
+    text-decoration: none;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+    white-space: nowrap;
+    position: relative;
+
+    &:hover {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.08);
+    }
+
+    &.active {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.12);
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 2px;
+        background: $accent-gold;
+        border-radius: 1px;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__login-btn {
+    @include btn-gold;
+    padding: $spacing-xs $spacing-lg;
+    font-size: 0.85rem;
+  }
+
+  &__hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: $spacing-sm;
+    color: $white;
+    z-index: 1001;
+
+    @include respond-md {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: $spacing-sm;
+    }
+
+    span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: $white;
+      border-radius: 2px;
+      transition: all $transition-base;
+    }
+
+    &.open {
+      span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+    }
+  }
+}
+
+// Mobile menu
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  right: 0;
+  background: $primary-dark;
+  border-bottom: 2px solid $accent-gold;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  z-index: 999;
+
+  @include respond-md {
+    display: block;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-md 0;
+  }
+
+  &__link {
+    padding: $spacing-md $spacing-lg;
+    font-family: $font-sans;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba($white, 0.8);
+    text-decoration: none;
+    transition: all $transition-fast;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.06);
+      border-left-color: $accent-gold;
+    }
+
+    &.active {
+      color: $accent-gold;
+      background: rgba($accent-gold, 0.1);
+      border-left-color: $accent-gold;
+    }
+
+    &--login {
+      @include btn-gold;
+      margin: $spacing-md $spacing-lg;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__profile-section {
+    padding: $spacing-md $spacing-lg;
+    border-top: 1px solid rgba($white, 0.1);
+    margin-top: $spacing-sm;
+  }
+
+  &__user-name {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $white;
+  }
+
+  &__user-email {
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    color: $medium-gray;
+    margin-top: $spacing-xs;
+  }
+
+  &__logout {
+    display: block;
+    margin-top: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $danger;
+    background: rgba($danger, 0.08);
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: rgba($danger, 0.15);
+    }
+  }
+}
+
+// User menu (desktop)
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-md;
+  cursor: pointer;
+  color: $white;
+  transition: all $transition-base;
+  font-family: $font-sans;
+  font-size: 0.85rem;
+
+  &:hover {
+    background: rgba($accent-gold, 0.1);
+    border-color: rgba($accent-gold, 0.3);
+  }
+
+  &__avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $accent-gold;
+  }
+
+  &__avatar-placeholder {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: $accent-gold;
+    color: $primary-dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border: 2px solid $accent-gold;
+  }
+
+  &__arrow {
+    font-size: 0.6rem;
+    transition: transform $transition-fast;
+    color: $medium-gray;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: $white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  z-index: 1002;
+
+  &__header {
+    padding: $spacing-md $spacing-lg;
+    background: $primary-navy;
+  }
+
+  &__name {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $white;
+  }
+
+  &__email {
+    font-family: $font-sans;
+    font-size: 0.75rem;
+    color: $accent-gold-light;
+    margin-top: 2px;
+  }
+
+  &__item {
+    display: block;
+    padding: $spacing-sm $spacing-lg;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $dark-gray;
+    text-decoration: none;
+    transition: background $transition-fast;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+
+    &:hover {
+      background: rgba($primary-maroon, 0.05);
+      color: $primary-maroon;
+    }
+
+    &--danger {
+      color: $danger;
+      border-top: 1px solid $light-gray;
+
+      &:hover {
+        background: rgba($danger, 0.05);
+        color: $danger;
+      }
+    }
+  }
+}

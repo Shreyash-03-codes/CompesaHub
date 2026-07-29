@@ -1,0 +1,87 @@
+<div *ngIf="submitted" class="submitted-overlay">
+  <div class="submitted-message">
+    <h2>Contest Ended</h2>
+    <p>Time is up! Your submissions have been saved.</p>
+    <a routerLink="/dsa-round">Back to Contests</a>
+  </div>
+</div>
+
+<ng-container *ngIf="!submitted">
+  <div *ngIf="loading" class="loading-spinner">Loading contest…</div>
+
+  <div *ngIf="!loading && contest" class="contest-layout">
+    <div class="contest-header">
+      <div class="contest-title">
+        <h3>{{ contest.title }}</h3>
+      </div>
+      <div class="contest-timer" [class.warning]="remainingSeconds < 120">
+        {{ formattedTime }}
+      </div>
+      <button class="submit-btn" (click)="submitCode()" [disabled]="submitting">
+        {{ submitting ? 'Submitting…' : 'Submit' }}
+      </button>
+    </div>
+
+    <div class="contest-body">
+      <div class="sidebar">
+        <h4>Problems</h4>
+        <div class="problem-list">
+          <div
+            *ngFor="let p of problems; let i = index"
+            class="problem-item"
+            [class.active]="i === currentProblemIndex"
+            (click)="selectProblem(i)"
+          >
+            <span class="difficulty-dot" [class.Easy]="p.difficulty === 'Easy'" [class.Medium]="p.difficulty === 'Medium'" [class.Hard]="p.difficulty === 'Hard'"></span>
+            <span>{{ p.title }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-panel" *ngIf="currentProblem as p">
+        <div class="problem-header">
+          <h2>{{ p.title }}</h2>
+          <span class="difficulty-badge" [class.Easy]="p.difficulty === 'Easy'" [class.Medium]="p.difficulty === 'Medium'" [class.Hard]="p.difficulty === 'Hard'">
+            {{ p.difficulty }}
+          </span>
+        </div>
+
+        <div class="section">
+          <h4>Problem Statement</h4>
+          <div class="section-content">{{ p.problem_statement }}</div>
+        </div>
+
+        <div class="section" *ngIf="p.constraints">
+          <h4>Constraints</h4>
+          <div class="section-content">{{ p.constraints }}</div>
+        </div>
+
+        <div class="section" *ngIf="p.sample_input">
+          <h4>Sample Input</h4>
+          <div class="section-content">{{ p.sample_input }}</div>
+        </div>
+
+        <div class="section" *ngIf="p.sample_output">
+          <h4>Sample Output</h4>
+          <div class="section-content">{{ p.sample_output }}</div>
+        </div>
+
+        <div class="section" *ngIf="p.function_signature">
+          <h4>Function Signature</h4>
+          <div class="section-content">{{ p.function_signature }}</div>
+        </div>
+      </div>
+
+      <div class="editor-panel">
+        <div class="editor-toolbar">
+          <select class="lang-select" [value]="language" (change)="changeLanguage($any($event.target).value)">
+            <option *ngFor="let lang of languages" [value]="lang">{{ lang | titlecase }}</option>
+          </select>
+        </div>
+        <div class="monaco-container">
+          <div #codeEditor class="editor-wrapper"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

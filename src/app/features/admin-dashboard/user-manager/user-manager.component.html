@@ -1,0 +1,72 @@
+<div class="user-manager">
+  <div class="user-manager__section">
+    <h3 class="section-title">Create Single Account</h3>
+    <form [formGroup]="singleForm" (ngSubmit)="onSubmitSingle()" class="single-form">
+      @if (singleError) {
+        <div class="error-message">{{ singleError }}</div>
+      }
+
+      <div class="field">
+        <label class="field-label" for="invite-email">Email Address</label>
+        <input
+          id="invite-email"
+          type="email"
+          class="field-input"
+          placeholder="user@compesa.in"
+          formControlName="email"
+        />
+        @if (singleForm.controls.email.touched && singleForm.controls.email.errors?.['required']) {
+          <small class="field-error">Email is required</small>
+        }
+        @if (singleForm.controls.email.touched && singleForm.controls.email.errors?.['email']) {
+          <small class="field-error">Enter a valid email</small>
+        }
+      </div>
+
+      <fieldset class="roles-fieldset">
+        <legend class="field-label">Roles</legend>
+        <div class="roles-grid">
+          @for (role of allRoles; track role; let i = $index) {
+            <label class="role-checkbox">
+              <input type="checkbox" [checked]="singleForm.controls.roles.at(i).value" (change)="toggleRole(i)" />
+              <span>{{ role }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+
+      <button type="submit" class="btn-primary" [disabled]="singleForm.invalid || selectedRoles.length === 0 || singleSubmitting">
+        {{ singleSubmitting ? 'Inviting\u2026' : 'Invite User' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="user-manager__section">
+    <h3 class="section-title">Bulk CSV Import</h3>
+    <div class="bulk-import">
+      <p class="bulk-import__hint">CSV format: <code>email,role1|role2</code> per line</p>
+      <input type="file" accept=".csv" (change)="onFileSelected($event)" class="field-input" />
+      <button class="btn-primary" [disabled]="!bulkFile || bulkSubmitting" (click)="onBulkImport()">
+        {{ bulkSubmitting ? 'Importing\u2026' : 'Import Users' }}
+      </button>
+      @if (bulkError) {
+        <div class="error-message">{{ bulkError }}</div>
+      }
+    </div>
+  </div>
+
+  @if (createdUsers.length > 0) {
+    <div class="user-manager__section">
+      <h3 class="section-title">Created Users</h3>
+      <div class="created-users">
+        @for (user of createdUsers; track user) {
+          <div class="created-user" [class.success]="user.status === 'success'" [class.error]="user.status === 'error'">
+            <span class="created-user__email">{{ user.email }}</span>
+            <span class="created-user__roles">{{ user.roles.join(', ') }}</span>
+            <span class="created-user__status">{{ user.status === 'success' ? '✓ Invited' : '✗ ' + (user.error || 'Failed') }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

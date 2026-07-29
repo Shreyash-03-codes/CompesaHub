@@ -1,0 +1,74 @@
+<div *ngIf="submitted" class="submitted-overlay">
+  <div class="submitted-message">
+    <h2>Test Submitted</h2>
+    <p>Redirecting to results…</p>
+  </div>
+</div>
+
+<ng-container *ngIf="!submitted">
+  <div *ngIf="loading" class="loading-spinner">Loading test…</div>
+
+  <div *ngIf="!loading && test" class="test-layout">
+    <div class="test-header">
+      <div class="test-title">
+        <h3>{{ test.title }}</h3>
+        <small>{{ questions.length }} Questions</small>
+      </div>
+      <div class="test-timer" [class.warning]="remainingSeconds < 120">
+        {{ formattedTime }}
+      </div>
+      <button class="submit-all-btn" (click)="confirmSubmit()" [disabled]="submitting">
+        {{ submitting ? 'Submitting…' : 'Submit Test' }}
+      </button>
+    </div>
+
+    <div class="test-body">
+      <div class="question-panel">
+        <ng-container *ngIf="currentQuestion as q">
+          <div class="question-number">Question {{ currentIndex + 1 }} of {{ questions.length }}</div>
+          <div class="question-text">{{ q.question_text }}</div>
+
+          <div *ngIf="q.code_snippet && q.question_type === 'code_display'" class="monaco-wrapper">
+            <div #monacoEditor class="monaco-editor"></div>
+          </div>
+
+          <div class="options-list">
+            <div
+              *ngFor="let opt of q.options; let i = index"
+              class="option-item"
+              [class.selected]="isOptionSelected(q.id, i)"
+              (click)="toggleOption(q.id, i)"
+            >
+              <input
+                [type]="isSingleSelect ? 'radio' : 'checkbox'"
+                [name]="'q_' + q.id"
+                [checked]="isOptionSelected(q.id, i)"
+                (click)="$event.stopPropagation(); toggleOption(q.id, i)"
+              />
+              <span class="option-label">{{ opt }}</span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="question-nav-panel">
+        <h4>Question Navigator</h4>
+        <div class="nav-grid">
+          <button
+            *ngFor="let q of questions; let i = index"
+            class="nav-btn"
+            [class.active]="i === currentIndex"
+            [class.answered]="isQuestionAnswered(i)"
+            (click)="goToQuestion(i)"
+          >
+            {{ i + 1 }}
+          </button>
+        </div>
+        <div class="nav-actions">
+          <button (click)="prevQuestion()" [disabled]="currentIndex === 0">Previous</button>
+          <button (click)="nextQuestion()" [disabled]="currentIndex === questions.length - 1">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

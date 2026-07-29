@@ -1,0 +1,113 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.reports-analytics {
+  @include page-container;
+}
+
+.ra-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  &__title {
+    @include heading-serif;
+    font-size: 2rem;
+    color: $primary-navy;
+  }
+
+  .gold-divider {
+    @include gold-divider;
+    margin: $spacing-sm auto;
+  }
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+}
+
+.section-title {
+  @include section-title;
+  font-size: 1.2rem;
+  margin-bottom: $spacing-lg;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-xl;
+
+  @include respond-lg {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-section {
+  @include card;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-xl;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  &__label {
+    @include heading-sans;
+    font-size: 0.85rem;
+    color: $primary-navy;
+    min-width: 120px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+
+  &__track {
+    flex: 1;
+    height: 24px;
+    background: $off-white;
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, $primary-navy, lighten($primary-navy, 15%));
+    transition: width 0.8s ease;
+    min-width: 4px;
+
+    &--gold {
+      background: linear-gradient(90deg, $accent-gold, $accent-gold-light);
+    }
+
+    &--maroon {
+      background: linear-gradient(90deg, $primary-maroon, lighten($primary-maroon, 10%));
+    }
+  }
+
+  &__value {
+    @include text-small;
+    min-width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+}
+
+.empty-state {
+  @include text-body;
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $medium-gray;
+}

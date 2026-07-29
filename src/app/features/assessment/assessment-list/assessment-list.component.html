@@ -1,0 +1,45 @@
+<div class="header">
+  <h2>Assessments &amp; Aptitude Tests</h2>
+  <p>Practice weekly tests, company patterns, and topic-based assessments.</p>
+</div>
+
+<div *ngIf="loading" class="loading-spinner">Loading tests…</div>
+
+<ng-container *ngIf="!loading">
+  <div *ngIf="tests.length === 0" class="empty-state">
+    <p>No assessments available yet. Check back later!</p>
+  </div>
+
+  <div class="test-grid">
+    <div
+      *ngFor="let test of tests"
+      class="test-card"
+      [class.clickable]="getTestStatus(test) === 'active'"
+      (click)="getTestStatus(test) === 'active' && startTest(test)"
+    >
+      <div class="card-top">
+        <h3>{{ test.title }}</h3>
+        <span class="badge" [class.upcoming]="getTestStatus(test) === 'upcoming'" [class.active]="getTestStatus(test) === 'active'" [class.past]="getTestStatus(test) === 'past'">
+          {{ getTestStatus(test) | titlecase }}
+        </span>
+      </div>
+      <p class="description">{{ test.description }}</p>
+      <div class="meta">
+        <span class="meta-item"><strong>Duration:</strong> {{ test.duration_minutes }} min</span>
+        <span class="meta-item"><strong>Questions:</strong> {{ test.total_questions }}</span>
+        <span class="meta-item"><strong>Max Score:</strong> {{ test.max_score }}</span>
+      </div>
+      <div class="meta">
+        <span class="meta-item"><strong>Start:</strong> {{ test.start_time | date:'short' }}</span>
+        <span class="meta-item"><strong>End:</strong> {{ test.end_time | date:'short' }}</span>
+      </div>
+      <div class="tags" *ngIf="test.topic_tags?.length">
+        <span class="tag" *ngFor="let tag of test.topic_tags">{{ tag }}</span>
+      </div>
+      <div class="card-actions">
+        <button *ngIf="getTestStatus(test) === 'active'" (click)="startTest(test)">Start Test</button>
+        <a *ngIf="getTestStatus(test) === 'past'" (click)="viewResults(test)">View Results</a>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,105 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.footer {
+  width: 100%;
+  background: linear-gradient(135deg, $primary-dark 0%, $near-black 100%);
+  border-top: 2px solid $accent-gold;
+  padding: $spacing-2xl $spacing-lg $spacing-lg;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-lg;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__logo {
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-sm;
+    background: $accent-gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: $primary-dark;
+  }
+
+  &__title {
+    font-family: $font-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $white;
+    span {
+      color: $accent-gold;
+    }
+  }
+
+  &__divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $accent-gold, transparent);
+    border: none;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-sm;
+    text-align: center;
+  }
+
+  &__text {
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $medium-gray;
+    line-height: 1.6;
+
+    strong {
+      color: $accent-gold-light;
+      font-weight: 600;
+    }
+
+    a {
+      color: $accent-gold;
+      text-decoration: none;
+      transition: color $transition-fast;
+      &:hover {
+        color: $accent-gold-light;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__text--shockwave {
+    font-size: 0.9rem;
+    color: rgba($white, 0.7);
+    strong {
+      background: linear-gradient(135deg, $accent-gold, $accent-gold-light);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+  }
+
+  &__copyright {
+    font-family: $font-sans;
+    font-size: 0.75rem;
+    color: rgba($medium-gray, 0.7);
+    margin-top: $spacing-sm;
+  }
+}

@@ -1,0 +1,262 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.search-notifications {
+  @include page-container;
+}
+
+.sn-header {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+
+  @include respond-sm {
+    flex-direction: column;
+  }
+}
+
+.search-bar {
+  flex: 1;
+
+  &__input-wrap {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border: 2px solid $light-gray;
+    border-radius: $radius-lg;
+    background: $white;
+    transition: border-color $transition-fast;
+
+    &:focus-within {
+      border-color: $accent-gold;
+      box-shadow: 0 0 0 3px rgba($accent-gold, 0.12);
+    }
+  }
+
+  &__icon {
+    font-size: 1.1rem;
+  }
+
+  &__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: $font-sans;
+    font-size: 0.95rem;
+    color: $near-black;
+    background: transparent;
+
+    &::placeholder {
+      color: $medium-gray;
+    }
+  }
+
+  &__clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $medium-gray;
+    font-size: 0.9rem;
+    padding: 2px;
+
+    &:hover {
+      color: $danger;
+    }
+  }
+}
+
+.notifications-toggle {
+  position: relative;
+}
+
+.notif-btn {
+  position: relative;
+  background: $white;
+  border: 2px solid $light-gray;
+  border-radius: $radius-lg;
+  padding: $spacing-sm $spacing-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $accent-gold;
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: $danger;
+    color: $white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: $font-sans;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 0 4px;
+  }
+}
+
+.notif-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 360px;
+  max-height: 480px;
+  background: $white;
+  border: 1px solid $light-gray;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: $spacing-md $spacing-lg;
+    border-bottom: 1px solid $light-gray;
+
+    h4 {
+      @include heading-sans;
+      font-size: 0.95rem;
+      color: $primary-navy;
+      margin: 0;
+    }
+  }
+
+  &__list {
+    overflow-y: auto;
+    flex: 1;
+  }
+}
+
+.notif-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $off-white;
+  transition: background $transition-fast;
+
+  &.unread {
+    background: rgba($accent-gold, 0.04);
+    border-left: 3px solid $accent-gold;
+  }
+
+  &:hover {
+    background: $off-white;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+
+    strong {
+      display: block;
+      font-family: $font-sans;
+      font-size: 0.85rem;
+      color: $near-black;
+    }
+
+    p {
+      @include text-small;
+      margin: $spacing-xs 0 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-left: $spacing-md;
+    flex-shrink: 0;
+  }
+}
+
+.btn-mark-read {
+  @include badge-maroon;
+  background: none;
+  border: 1px solid $primary-maroon;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px $spacing-sm;
+  border-radius: 9999px;
+
+  &:hover {
+    background: rgba($primary-maroon, 0.1);
+  }
+}
+
+.notif-link {
+  @include text-small;
+  color: $info;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.notif-empty {
+  @include text-body;
+  text-align: center;
+  padding: $spacing-xl;
+  color: $medium-gray;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.result-group {
+  &__title {
+    @include heading-serif;
+    font-size: 1.2rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.result-item {
+  @include card;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  text-decoration: none;
+  cursor: pointer;
+
+  &__name {
+    @include heading-sans;
+    font-size: 0.9rem;
+    color: $primary-navy;
+  }
+
+  &__meta {
+    @include text-small;
+  }
+}
+
+.no-results {
+  @include text-body;
+  text-align: center;
+  padding: $spacing-3xl;
+  color: $medium-gray;
+}

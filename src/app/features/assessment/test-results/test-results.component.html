@@ -1,0 +1,102 @@
+<div *ngIf="loading" class="empty-state">Loading results…</div>
+
+<ng-container *ngIf="!loading">
+  <div *ngIf="!test" class="empty-state">Test not found.</div>
+
+  <ng-container *ngIf="test">
+    <div class="result-header">
+      <h2>{{ test.title }} — Results</h2>
+      <div class="score-circle">
+        <span class="score-number">{{ submission?.score ?? 0 }}</span>
+        <span class="score-total">/ {{ totalPoints }}</span>
+      </div>
+      <div class="percentage">{{ percentage }}%</div>
+    </div>
+
+    <div class="results-grid">
+      <div class="card">
+        <h3>Summary</h3>
+        <div class="breakdown-stats">
+          <div class="stat correct">
+            <div class="stat-value">{{ correctCount }}</div>
+            <div class="stat-label">Correct</div>
+          </div>
+          <div class="stat incorrect">
+            <div class="stat-value">{{ incorrectCount }}</div>
+            <div class="stat-label">Incorrect</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">{{ questions.length }}</div>
+            <div class="stat-label">Total Questions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Score</h3>
+        <div class="breakdown-stats">
+          <div class="stat">
+            <div class="stat-value">{{ submission?.score ?? 0 }}</div>
+            <div class="stat-label">Score</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">{{ totalPoints }}</div>
+            <div class="stat-label">Total</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card full-width" *ngIf="topicBreakdown.length > 0">
+        <h3>Topic-wise Analysis</h3>
+        <div class="topic-bar">
+          <div class="topic-row" *ngFor="let t of topicBreakdown">
+            <div class="topic-label">
+              <span class="topic-name">{{ t.topic }}</span>
+              <span>{{ t.correct }} / {{ t.total }} ({{ t.percentage }}%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" [style.width.%]="t.percentage"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card full-width">
+        <h3>Leaderboard</h3>
+        <ng-container *ngIf="leaderboard.length > 0; else noLeaderboard">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>PRN</th>
+                <th>Score</th>
+                <th>Percentage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of leaderboard; let i = index">
+                <td>
+                  <span *ngIf="i === 0" class="medal">&#x1F947;</span>
+                  <span *ngIf="i === 1" class="medal">&#x1F948;</span>
+                  <span *ngIf="i === 2" class="medal">&#x1F949;</span>
+                </td>
+                <td class="rank">{{ i + 1 }}</td>
+                <td>{{ entry.name }}</td>
+                <td>{{ entry.prn }}</td>
+                <td>{{ entry.score }} / {{ entry.total }}</td>
+                <td>{{ entry.percentage }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #noLeaderboard>
+          <p class="empty-state">No submissions yet.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <a class="back-link" routerLink="/assessment">Back to Assessments</a>
+  </ng-container>
+</ng-container>

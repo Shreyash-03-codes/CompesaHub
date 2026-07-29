@@ -1,0 +1,45 @@
+<div class="header">
+  <h2>DSA Contests</h2>
+  <p>Solve coding problems in timed contests.</p>
+</div>
+
+<div *ngIf="loading" class="loading-spinner">Loading contests…</div>
+
+<ng-container *ngIf="!loading">
+  <div *ngIf="contests.length === 0" class="empty-state">
+    <p>No contests available yet. Check back later!</p>
+  </div>
+
+  <div class="contest-grid">
+    <div
+      *ngFor="let contest of contests"
+      class="contest-card"
+      [class.clickable]="getContestStatus(contest) === 'active'"
+      (click)="getContestStatus(contest) === 'active' && enterContest(contest)"
+    >
+      <div class="card-top">
+        <h3>{{ contest.title }}</h3>
+        <span
+          class="badge"
+          [class.upcoming]="getContestStatus(contest) === 'upcoming'"
+          [class.active]="getContestStatus(contest) === 'active'"
+          [class.past]="getContestStatus(contest) === 'past'"
+        >
+          {{ getContestStatus(contest) | titlecase }}
+        </span>
+      </div>
+      <p class="description">{{ contest.description }}</p>
+      <div class="meta">
+        <span class="meta-item"><strong>Duration:</strong> {{ contest.duration_minutes }} min</span>
+        <span class="meta-item"><strong>Problems:</strong> {{ contest.problems?.length || 'N/A' }}</span>
+      </div>
+      <div class="meta">
+        <span class="meta-item"><strong>Start:</strong> {{ contest.start_time | date:'short' }}</span>
+        <span class="meta-item"><strong>End:</strong> {{ contest.end_time | date:'short' }}</span>
+      </div>
+      <div class="card-actions">
+        <button *ngIf="getContestStatus(contest) === 'active'" (click)="enterContest(contest)">Enter Contest</button>
+      </div>
+    </div>
+  </div>
+</ng-container>

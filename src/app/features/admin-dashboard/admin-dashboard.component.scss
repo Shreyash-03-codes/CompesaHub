@@ -1,0 +1,111 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.admin-dashboard {
+  @include page-container;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  &__title {
+    @include heading-serif;
+    font-size: 2rem;
+    color: $primary-navy;
+  }
+
+  .gold-divider {
+    @include gold-divider;
+    margin: $spacing-sm auto;
+  }
+}
+
+.access-denied {
+  text-align: center;
+  padding: $spacing-3xl;
+  color: $danger;
+  font-family: $font-sans;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-xl;
+  border-bottom: 2px solid $light-gray;
+  padding-bottom: 0;
+
+  &__btn {
+    @include heading-sans;
+    font-size: 0.9rem;
+    padding: $spacing-sm $spacing-lg;
+    background: transparent;
+    border: none;
+    color: $medium-gray;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+
+    &:hover {
+      color: $primary-maroon;
+    }
+
+    &.active {
+      color: $primary-maroon;
+      border-bottom-color: $accent-gold;
+    }
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+}
+
+.quick-links {
+  margin-bottom: $spacing-2xl;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: $spacing-md;
+  }
+}
+
+.quick-link-card,
+.content-link-card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-lg;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+
+  &__icon {
+    font-size: 1.75rem;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__label {
+    @include heading-sans;
+    font-size: 0.85rem;
+    color: $primary-navy;
+  }
+}
+
+.section-title {
+  @include section-title;
+}
+
+.content-links {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: $spacing-md;
+  }
+}

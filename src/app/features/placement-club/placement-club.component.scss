@@ -1,0 +1,238 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.placement-page {
+  @include page-container;
+}
+
+.placement-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.placement-page__title {
+  @include section-title;
+  margin-bottom: 0;
+}
+
+.gold-divider {
+  @include gold-divider;
+  margin: $spacing-sm 0;
+}
+
+.placement-page__subtitle {
+  @include text-body;
+  margin: 0;
+}
+
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.member-form-card {
+  @include card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  animation: slideDown 0.3s ease;
+}
+
+.member-form-card__title {
+  @include heading-sans;
+  font-size: 1.1rem;
+  color: $primary-navy;
+  margin-bottom: $spacing-md;
+}
+
+.member-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+
+  &__grow {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.field-label {
+  @include label;
+}
+
+.field-input {
+  @include input-field;
+
+  &--textarea {
+    resize: vertical;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.section-title {
+  @include heading-serif;
+  font-size: 1.3rem;
+  color: $primary-navy;
+  margin-bottom: $spacing-lg;
+}
+
+.activities-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: $spacing-md;
+}
+
+.activity-card {
+  @include card;
+  padding: $spacing-lg;
+  text-align: center;
+  animation: fadeSlideIn 0.4s ease both;
+
+  &__icon {
+    font-size: 2rem;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__title {
+    @include heading-sans;
+    font-size: 1rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__desc {
+    @include text-small;
+    margin: 0;
+  }
+}
+
+.members-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.past-section {
+  margin-bottom: $spacing-xl;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $primary-maroon;
+  font-family: $font-sans;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: $spacing-sm 0;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $accent-gold-dark;
+    text-decoration: underline;
+  }
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: $spacing-lg;
+
+  @include respond-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.member-wrapper {
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+.member-actions {
+  display: flex;
+  gap: $spacing-xs;
+  margin-top: $spacing-sm;
+  justify-content: center;
+}
+
+.btn-small {
+  @include btn-secondary;
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.7rem;
+
+  &--danger {
+    color: $danger;
+    border-color: $danger;
+
+    &:hover {
+      background: $danger;
+      color: $white;
+    }
+  }
+}
+
+.empty-text {
+  @include text-body;
+  color: $medium-gray;
+  text-align: center;
+  padding: $spacing-xl;
+  grid-column: 1 / -1;
+}
+
+.resources-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.resource-link {
+  @include card;
+  padding: $spacing-md $spacing-lg;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $primary-navy;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  transition: all $transition-base;
+
+  &::before {
+    content: '\2192';
+    color: $accent-gold;
+    font-weight: 700;
+  }
+
+  &:hover {
+    color: $primary-maroon;
+    transform: translateX(4px);
+  }
+}

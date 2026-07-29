@@ -1,0 +1,46 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.stat-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xl $spacing-lg;
+  @include card;
+  text-align: center;
+
+  .stat-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: $spacing-xs;
+  }
+
+  .stat-value-group {
+    display: flex;
+    align-items: baseline;
+    gap: $spacing-xs;
+  }
+
+  .stat-value {
+    @include heading-serif;
+    font-size: 2.5rem;
+    @include gold-gradient-text;
+  }
+
+  .stat-suffix {
+    @include heading-sans;
+    font-size: 1rem;
+    color: $medium-gray;
+  }
+
+  .stat-label {
+    @include text-small;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}

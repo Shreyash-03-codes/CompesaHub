@@ -1,0 +1,475 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.feedback-page {
+  @include page-container;
+}
+
+.feedback-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.feedback-page__title {
+  @include section-title;
+  margin-bottom: 0;
+}
+
+.gold-divider {
+  @include gold-divider;
+  margin: $spacing-sm 0;
+}
+
+.feedback-page__subtitle {
+  @include text-body;
+  margin: 0;
+}
+
+.section-title {
+  @include heading-serif;
+  font-size: 1.3rem;
+  color: $primary-navy;
+  margin-bottom: $spacing-lg;
+}
+
+.forms-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.forms-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.form-card {
+  @include card;
+  padding: $spacing-md $spacing-lg;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  gap: $spacing-md;
+  border-left: 4px solid $medium-gray;
+  transition: all $transition-base;
+
+  &--active {
+    border-left-color: $success;
+  }
+
+  &:hover {
+    transform: translateX(4px);
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__title {
+    @include heading-sans;
+    font-size: 1rem;
+    color: $primary-navy;
+    margin-bottom: 2px;
+  }
+
+  &__news {
+    @include text-small;
+    margin: 0 0 2px;
+    color: $primary-maroon;
+  }
+
+  &__dates {
+    @include text-small;
+    margin: 0;
+    font-size: 0.75rem;
+  }
+
+  &__status {
+    @include badge;
+    font-size: 0.7rem;
+    background: rgba($medium-gray, 0.15);
+    color: $medium-gray;
+
+    &--active {
+      background: rgba($success, 0.1);
+      color: $success;
+    }
+  }
+}
+
+.feedback-form-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $primary-maroon;
+  font-family: $font-sans;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: $spacing-sm 0;
+  margin-bottom: $spacing-md;
+  display: inline-block;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $accent-gold-dark;
+  }
+}
+
+.feedback-card {
+  @include card;
+  padding: $spacing-xl;
+
+  &__title {
+    @include heading-serif;
+    font-size: 1.2rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.admin-bar {
+  margin-bottom: $spacing-md;
+}
+
+.btn-small {
+  @include btn-secondary;
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.75rem;
+}
+
+.admin-analysis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-md;
+  background: rgba($accent-gold, 0.05);
+  border-radius: $radius-md;
+  border: 1px solid rgba($accent-gold, 0.15);
+}
+
+.analysis-card {
+  text-align: center;
+  padding: $spacing-md;
+
+  &__label {
+    @include text-small;
+    display: block;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__value {
+    @include heading-serif;
+    font-size: 2rem;
+    color: $primary-navy;
+    display: block;
+  }
+}
+
+.stars-display {
+  margin-top: $spacing-xs;
+}
+
+.star {
+  font-size: 1.2rem;
+  color: $light-gray;
+  transition: color $transition-fast;
+
+  &--filled {
+    color: $accent-gold;
+  }
+
+  &--dim {
+    opacity: 0.3;
+  }
+}
+
+.distribution {
+  grid-column: 1 / -1;
+
+  &__title {
+    @include heading-sans;
+    font-size: 0.9rem;
+    color: $dark-gray;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__label {
+    @include text-small;
+    width: 60px;
+    font-size: 0.8rem;
+  }
+
+  &__bar-bg {
+    flex: 1;
+    height: 8px;
+    background: $light-gray;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__bar {
+    height: 100%;
+    background: linear-gradient(90deg, $accent-gold, $accent-gold-dark);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  &__count {
+    @include text-small;
+    width: 30px;
+    text-align: right;
+    font-size: 0.8rem;
+  }
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.field-label {
+  @include label;
+}
+
+.star-rating__stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: $light-gray;
+  cursor: pointer;
+  transition: all $transition-fast;
+  padding: 0;
+  line-height: 1;
+
+  &:hover:not(:disabled) {
+    color: $accent-gold;
+    transform: scale(1.15);
+  }
+
+  &--filled {
+    color: $accent-gold;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.field-input {
+  @include input-field;
+
+  &--textarea {
+    resize: vertical;
+  }
+}
+
+.field-error {
+  @include text-small;
+  color: $danger;
+  margin-top: $spacing-xs;
+}
+
+.btn-primary {
+  @include btn-primary;
+  align-self: flex-start;
+}
+
+.notice {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  font-size: 0.85rem;
+  font-family: $font-sans;
+
+  &--warning {
+    background: rgba($warning, 0.1);
+    border: 1px solid rgba($warning, 0.2);
+    color: darken($warning, 10%);
+  }
+}
+
+.submitted-message {
+  text-align: center;
+  padding: $spacing-xl;
+  animation: scaleIn 0.3s ease;
+
+  &__icon {
+    font-size: 2.5rem;
+    color: $success;
+    display: block;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    @include text-body;
+    font-weight: 600;
+    color: $primary-navy;
+  }
+}
+
+.existing-response {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background: rgba($accent-gold, 0.05);
+  border-radius: $radius-md;
+
+  &__rating {
+    @include text-body;
+    font-size: 0.9rem;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__comment {
+    @include text-small;
+    margin: 0;
+    font-style: italic;
+  }
+}
+
+.responses-list {
+  margin-top: $spacing-xl;
+  border-top: 1px solid $light-gray;
+  padding-top: $spacing-lg;
+
+  &__title {
+    @include heading-sans;
+    font-size: 1rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.response-item {
+  padding: $spacing-md;
+  border-bottom: 1px solid $light-gray;
+  animation: fadeSlideIn 0.3s ease both;
+
+  &__header {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+    margin-bottom: $spacing-xs;
+    flex-wrap: wrap;
+  }
+
+  &__user {
+    font-weight: 600;
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    color: $primary-navy;
+  }
+
+  &__prn {
+    @include text-small;
+    font-size: 0.75rem;
+  }
+
+  &__date {
+    @include text-small;
+    margin-left: auto;
+    font-size: 0.75rem;
+  }
+
+  &__rating {
+    margin-bottom: $spacing-xs;
+  }
+
+  &__comment {
+    @include text-body;
+    font-size: 0.85rem;
+    margin: 0;
+    font-style: italic;
+    color: $dark-gray;
+  }
+}
+
+.faq-section {
+  margin-bottom: $spacing-2xl;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.faq-item {
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  overflow: hidden;
+  animation: fadeSlideIn 0.3s ease both;
+
+  &__question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md $spacing-lg;
+    background: $white;
+    border: none;
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $primary-navy;
+    cursor: pointer;
+    text-align: left;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: $off-white;
+    }
+  }
+
+  &__icon {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $accent-gold;
+    transition: transform $transition-base;
+  }
+
+  &__answer {
+    padding: 0 $spacing-lg $spacing-md;
+    animation: slideDown 0.25s ease;
+
+    p {
+      @include text-body;
+      font-size: 0.85rem;
+      margin: 0;
+      line-height: 1.7;
+    }
+  }
+}
+
+.empty-text {
+  @include text-body;
+  color: $medium-gray;
+  text-align: center;
+  padding: $spacing-xl;
+}

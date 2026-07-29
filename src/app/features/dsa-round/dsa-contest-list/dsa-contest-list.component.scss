@@ -1,0 +1,117 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  @include page-container;
+}
+
+.header {
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    @include section-title;
+  }
+
+  p {
+    @include text-body;
+  }
+}
+
+.contest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: $spacing-lg;
+}
+
+.contest-card {
+  @include card;
+  padding: $spacing-lg;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    h3 {
+      font-size: 1.125rem;
+      color: $primary-navy;
+      margin: 0;
+    }
+
+    .badge {
+      @include badge;
+
+      &.upcoming {
+        @include badge-maroon;
+      }
+
+      &.active {
+        @include badge-gold;
+      }
+
+      &.past {
+        @include badge;
+        background: rgba($medium-gray, 0.15);
+        color: $medium-gray;
+      }
+    }
+  }
+
+  .description {
+    @include text-small;
+    margin: 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    margin-top: $spacing-sm;
+
+    .meta-item {
+      @include text-small;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      strong {
+        color: $dark-gray;
+      }
+    }
+  }
+
+  .card-actions {
+    margin-top: auto;
+    padding-top: $spacing-md;
+
+    button {
+      @include btn-primary;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-3xl $spacing-lg;
+  color: $medium-gray;
+
+  p {
+    @include text-body;
+  }
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: $spacing-3xl;
+  color: $medium-gray;
+  font-family: $font-sans;
+}

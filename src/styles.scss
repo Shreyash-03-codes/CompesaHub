@@ -1,1 +1,96 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/typography' as *;
+@use 'styles/animations' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-sans;
+  font-size: 16px;
+  line-height: 1.6;
+  color: $dark-gray;
+  background: $off-white;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-top: $header-height;
+  padding: $spacing-xl;
+  @include respond-md {
+    padding: $spacing-md;
+  }
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid $light-gray;
+  border-top-color: $accent-gold;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: $spacing-xl auto;
+}
+
+.page-enter {
+  animation: fadeIn $transition-slow ease, slideUp $transition-slow ease;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.gold-text {
+  @include gold-gradient-text;
+}
+
+.maroon-badge {
+  @include badge-maroon;
+}
+
+.gold-badge {
+  @include badge-gold;
+}

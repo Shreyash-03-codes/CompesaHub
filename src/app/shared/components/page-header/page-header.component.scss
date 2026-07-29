@@ -1,0 +1,46 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.page-header {
+  padding: $spacing-2xl 0 $spacing-xl;
+  text-align: center;
+
+  @include respond-sm {
+    padding: $spacing-xl 0 $spacing-lg;
+  }
+
+  &__title {
+    font-family: $font-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: $primary-navy;
+    margin: 0;
+
+    @include respond-sm {
+      font-size: 1.75rem;
+    }
+  }
+
+  &__divider {
+    @include gold-divider;
+    margin: $spacing-md auto;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  &__subtitle {
+    font-family: $font-sans;
+    font-size: 1rem;
+    font-weight: 400;
+    color: $medium-gray;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+
+    @include respond-sm {
+      font-size: 0.9rem;
+    }
+  }
+}

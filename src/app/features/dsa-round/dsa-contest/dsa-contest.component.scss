@@ -1,0 +1,269 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.contest-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.contest-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm $spacing-lg;
+  background: $primary-dark;
+  color: $white;
+
+  .contest-title {
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: $white;
+      font-family: $font-sans;
+    }
+  }
+
+  .contest-timer {
+    font-family: $font-mono;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $accent-gold;
+
+    &.warning {
+      color: $danger;
+      animation: goldPulse 1s infinite;
+    }
+  }
+
+  .submit-btn {
+    @include btn-gold;
+    font-size: 0.85rem;
+    padding: $spacing-xs $spacing-md;
+  }
+}
+
+.contest-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background: $off-white;
+  border-right: 1px solid $light-gray;
+  padding: $spacing-md;
+  overflow-y: auto;
+
+  h4 {
+    font-size: 0.9rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-md;
+  }
+
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    .problem-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-sm;
+      border-radius: $radius-md;
+      cursor: pointer;
+      font-family: $font-sans;
+      font-size: 0.85rem;
+      color: $dark-gray;
+      transition: all $transition-fast;
+
+      &:hover {
+        background: rgba($accent-gold, 0.08);
+      }
+
+      &.active {
+        background: rgba($accent-gold, 0.15);
+        color: $primary-navy;
+        font-weight: 600;
+      }
+
+      .difficulty-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+
+        &.Easy {
+          background: $success;
+        }
+
+        &.Medium {
+          background: $warning;
+        }
+
+        &.Hard {
+          background: $danger;
+        }
+      }
+    }
+  }
+}
+
+.problem-panel {
+  width: 45%;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  border-right: 1px solid $light-gray;
+
+  .problem-header {
+    margin-bottom: $spacing-md;
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: $spacing-xs;
+    }
+
+    .difficulty-badge {
+      @include badge;
+      font-size: 0.75rem;
+
+      &.Easy {
+        background: rgba($success, 0.1);
+        color: $success;
+      }
+
+      &.Medium {
+        background: rgba($warning, 0.15);
+        color: $warning;
+      }
+
+      &.Hard {
+        background: rgba($danger, 0.1);
+        color: $danger;
+      }
+    }
+  }
+
+  .section {
+    margin-bottom: $spacing-lg;
+
+    h4 {
+      font-size: 0.9rem;
+      color: $primary-navy;
+      margin-bottom: $spacing-sm;
+      font-family: $font-sans;
+    }
+
+    .section-content {
+      font-family: $font-sans;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: $dark-gray;
+      white-space: pre-wrap;
+      background: $off-white;
+      padding: $spacing-md;
+      border-radius: $radius-md;
+      border: 1px solid $light-gray;
+    }
+  }
+}
+
+.editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .editor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md;
+    background: $primary-dark;
+    border-bottom: 1px solid rgba($white, 0.1);
+
+    .lang-select {
+      background: rgba($white, 0.1);
+      color: $white;
+      border: 1px solid rgba($white, 0.2);
+      border-radius: $radius-sm;
+      padding: $spacing-xs $spacing-sm;
+      font-family: $font-mono;
+      font-size: 0.8rem;
+      cursor: pointer;
+
+      option {
+        background: $primary-dark;
+        color: $white;
+      }
+    }
+  }
+
+  .monaco-container {
+    flex: 1;
+    min-height: 0;
+
+    .editor-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.submitted-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: $off-white;
+
+  .submitted-message {
+    text-align: center;
+
+    h2 {
+      @include section-title;
+    }
+
+    p {
+      @include text-body;
+    }
+  }
+}
+
+@include respond-lg {
+  .problem-panel {
+    width: 50%;
+  }
+}
+
+@include respond-md {
+  .contest-body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid $light-gray;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: $spacing-sm;
+
+    .problem-list {
+      flex-direction: row;
+    }
+  }
+
+  .problem-panel {
+    width: 100%;
+    border-right: none;
+    max-height: 40vh;
+  }
+}

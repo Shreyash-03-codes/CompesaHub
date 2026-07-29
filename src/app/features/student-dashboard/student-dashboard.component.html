@@ -1,0 +1,152 @@
+<div class="dashboard-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle" *ngIf="profile$ | async as profile">
+        Welcome back, <strong>{{ profile.name || 'Student' }}</strong>
+      </p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/assessments" class="btn-gold">View Assessments</a>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading()">
+    <div class="spinner"></div>
+    <p>Loading your dashboard...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error() && !loading()">
+    <p class="error-message">{{ error() }}</p>
+    <button class="btn-primary" (click)="ngOnInit()">Retry</button>
+  </div>
+
+  <ng-container *ngIf="!loading() && !error()">
+    <div class="stats-row">
+      <app-stat-counter
+        [targetValue]="upcomingCount"
+        label="Upcoming Tests"
+        icon="📝"
+      ></app-stat-counter>
+      <app-stat-counter
+        [targetValue]="testsAttempted"
+        label="Tests Attempted"
+        icon="✅"
+      ></app-stat-counter>
+      <app-stat-counter
+        [targetValue]="newsCount"
+        label="News & Updates"
+        icon="📢"
+      ></app-stat-counter>
+      <app-stat-counter
+        [targetValue]="4"
+        label="Quick Links"
+        icon="🔗"
+      ></app-stat-counter>
+    </div>
+
+    <div class="widgets-grid">
+      <section class="widget-card" #widgetEl>
+        <div class="widget-header">
+          <h2 class="widget-title">Upcoming Tests & Assessments</h2>
+          <a routerLink="/assessments" class="widget-link">View All</a>
+        </div>
+        <div class="widget-body">
+          <div class="empty-state" *ngIf="upcomingTests().length === 0">
+            <p>No upcoming tests scheduled.</p>
+          </div>
+          <div class="test-card" *ngFor="let test of upcomingTests()">
+            <div class="test-info">
+              <h3 class="test-title">{{ test.title }}</h3>
+              <span class="test-type-badge" [class]="'badge-' + test.type">{{ test.type }}</span>
+            </div>
+            <div class="test-meta">
+              <span class="test-date">{{ test.start_time | date:'mediumDate' }}</span>
+              <span class="test-duration">{{ test.duration_minutes }} min</span>
+              <span class="test-questions">{{ test.total_questions }} Q</span>
+            </div>
+            <a [routerLink]="['/assessments', test.id]" class="btn-primary btn-sm">Start</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="widget-card" #widgetEl>
+        <div class="widget-header">
+          <h2 class="widget-title">Latest News & Activities</h2>
+          <a routerLink="/news" class="widget-link">View All</a>
+        </div>
+        <div class="widget-body">
+          <div class="empty-state" *ngIf="newsItems().length === 0">
+            <p>No recent news.</p>
+          </div>
+          <div class="news-item" *ngFor="let news of newsItems()">
+            <div class="news-icon" [class]="'news-' + news.type">
+              <span>{{ news.type === 'workshop' ? '🔧' : news.type === 'hackathon' ? '💻' : news.type === 'guest_lecture' ? '🎤' : news.type === 'placement_session' ? '💼' : '📰' }}</span>
+            </div>
+            <div class="news-content">
+              <h3 class="news-title">{{ news.title }}</h3>
+              <p class="news-excerpt">{{ news.content | slice:0:120 }}{{ news.content.length > 120 ? '...' : '' }}</p>
+              <span class="news-date">{{ news.event_date | date:'mediumDate' }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="widget-card" #widgetEl>
+        <div class="widget-header">
+          <h2 class="widget-title">Placement Club</h2>
+          <a routerLink="/placement-club" class="widget-link">View All</a>
+        </div>
+        <div class="widget-body">
+          <div class="empty-state" *ngIf="placementMembers().length === 0">
+            <p>No placement club members listed.</p>
+          </div>
+          <div class="member-card" *ngFor="let member of placementMembers()">
+            <div class="member-avatar">
+              <img *ngIf="member.photo_url; else avatarPlaceholder" [src]="member.photo_url" [alt]="member.name" />
+              <ng-template #avatarPlaceholder>
+                <span class="avatar-initials">{{ member.name | slice:0:1 }}</span>
+              </ng-template>
+            </div>
+            <div class="member-info">
+              <h3 class="member-name">{{ member.name }}</h3>
+              <span class="member-role">{{ member.role }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="widget-card" #widgetEl>
+        <div class="widget-header">
+          <h2 class="widget-title">Quick Links</h2>
+        </div>
+        <div class="widget-body quick-links-grid">
+          <a routerLink="/assessments" class="quick-link">
+            <span class="ql-icon">📝</span>
+            <span class="ql-label">Assessments</span>
+          </a>
+          <a routerLink="/dsa" class="quick-link">
+            <span class="ql-icon">💻</span>
+            <span class="ql-label">DSA Practice</span>
+          </a>
+          <a routerLink="/news" class="quick-link">
+            <span class="ql-icon">📢</span>
+            <span class="ql-label">News</span>
+          </a>
+          <a routerLink="/reports" class="quick-link">
+            <span class="ql-icon">📊</span>
+            <span class="ql-label">Reports</span>
+          </a>
+          <a routerLink="/placement-club" class="quick-link">
+            <span class="ql-icon">💼</span>
+            <span class="ql-label">Placements</span>
+          </a>
+          <a routerLink="/committees" class="quick-link">
+            <span class="ql-icon">👥</span>
+            <span class="ql-label">Committees</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+</div>

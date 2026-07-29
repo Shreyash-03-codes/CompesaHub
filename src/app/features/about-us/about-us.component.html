@@ -1,0 +1,86 @@
+<div class="about-page">
+  <div class="about-hero">
+    <div class="about-hero__overlay"></div>
+    <div class="about-hero__content">
+      <h1 class="about-hero__title">About COMPESA</h1>
+      <hr class="about-hero__divider" />
+      <p class="about-hero__subtitle">Computer Engineering Students' Association</p>
+    </div>
+  </div>
+
+  <div class="about-body">
+    @if (isAdmin) {
+      <div class="admin-bar">
+        @if (!editing) {
+          <button class="btn-secondary" (click)="enableEdit()">Edit Content</button>
+        }
+      </div>
+    }
+
+    @if (editing && isAdmin) {
+      <div class="edit-card">
+        <h2 class="edit-card__title">Edit About Content</h2>
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-form">
+          <div class="field">
+            <label class="field-label">Vision</label>
+            <textarea formControlName="vision" class="field-input field-input--textarea" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Mission</label>
+            <textarea formControlName="mission" class="field-input field-input--textarea" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Objectives (one per line)</label>
+            <textarea formControlName="objectives" class="field-input field-input--textarea" rows="5" placeholder="Enter each objective on a new line"></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Structure</label>
+            <textarea formControlName="structure" class="field-input field-input--textarea" rows="4" placeholder="Describe COMPESA's organizational structure"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="editForm.invalid || submitting">
+              {{ submitting ? 'Saving...' : 'Save Changes' }}
+            </button>
+            <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    }
+
+    @if (about) {
+      <section class="content-section">
+        <div class="content-block">
+          <h2 class="content-block__title">Vision</h2>
+          <hr class="gold-divider" />
+          <p class="content-block__text">{{ about.vision }}</p>
+        </div>
+
+        <div class="content-block">
+          <h2 class="content-block__title">Mission</h2>
+          <hr class="gold-divider" />
+          <p class="content-block__text">{{ about.mission }}</p>
+        </div>
+
+        <div class="content-block">
+          <h2 class="content-block__title">Objectives</h2>
+          <hr class="gold-divider" />
+          <ul class="objectives-list">
+            @for (obj of objectivesList; track obj) {
+              <li class="objectives-list__item">{{ obj }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="content-block">
+          <h2 class="content-block__title">Structure</h2>
+          <hr class="gold-divider" />
+          <p class="content-block__text">{{ about.structure }}</p>
+        </div>
+      </section>
+    } @else {
+      <div class="loading-state">
+        <p>Loading content...</p>
+      </div>
+    }
+  </div>
+</div>

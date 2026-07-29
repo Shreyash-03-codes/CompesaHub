@@ -1,0 +1,150 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.user-manager {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__section {
+    @include card;
+    padding: $spacing-xl;
+  }
+}
+
+.section-title {
+  @include section-title;
+  font-size: 1.25rem;
+  margin-bottom: $spacing-lg;
+}
+
+.single-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: 500px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  @include label;
+}
+
+.field-input {
+  @include input-field;
+}
+
+.field-error {
+  color: $danger;
+  font-size: 0.8rem;
+  margin-top: $spacing-xs;
+}
+
+.error-message {
+  padding: $spacing-sm $spacing-md;
+  background: rgba($danger, 0.08);
+  color: $danger;
+  border-radius: $radius-md;
+  font-size: 0.85rem;
+}
+
+.roles-fieldset {
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+
+  legend {
+    @include label;
+    padding: 0 $spacing-sm;
+  }
+}
+
+.roles-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.role-checkbox {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-family: $font-sans;
+  font-size: 0.85rem;
+  color: $dark-gray;
+  cursor: pointer;
+
+  input {
+    accent-color: $accent-gold;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.btn-primary {
+  @include btn-primary;
+  align-self: flex-start;
+}
+
+.bulk-import {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: 500px;
+
+  &__hint {
+    @include text-small;
+    code {
+      background: $off-white;
+      padding: 2px $spacing-xs;
+      border-radius: $radius-sm;
+      font-family: $font-mono;
+    }
+  }
+}
+
+.created-users {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.created-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  font-size: 0.85rem;
+  font-family: $font-sans;
+
+  &.success {
+    background: rgba($success, 0.06);
+    border-left: 3px solid $success;
+  }
+
+  &.error {
+    background: rgba($danger, 0.06);
+    border-left: 3px solid $danger;
+  }
+
+  &__email {
+    font-weight: 600;
+    color: $near-black;
+  }
+
+  &__roles {
+    color: $medium-gray;
+  }
+
+  &__status {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}

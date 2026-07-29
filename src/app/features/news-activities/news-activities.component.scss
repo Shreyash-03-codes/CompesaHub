@@ -1,0 +1,239 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.news-page {
+  @include page-container;
+}
+
+.news-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.news-page__title {
+  @include section-title;
+  margin-bottom: 0;
+}
+
+.gold-divider {
+  @include gold-divider;
+  margin: $spacing-sm 0;
+}
+
+.news-page__subtitle {
+  @include text-body;
+  margin: 0;
+}
+
+.btn-primary {
+  @include btn-primary;
+}
+
+.news-form-card {
+  @include card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  animation: slideDown 0.3s ease;
+}
+
+.news-form-card__title {
+  @include heading-sans;
+  font-size: 1.1rem;
+  color: $primary-navy;
+  margin-bottom: $spacing-md;
+}
+
+.news-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+
+  &__grow {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.field-label {
+  @include label;
+}
+
+.field-input {
+  @include input-field;
+
+  &--textarea {
+    resize: vertical;
+  }
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+}
+
+.filter-btn {
+  @include btn-secondary;
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.825rem;
+
+  &--active {
+    background: $primary-maroon;
+    color: $white;
+    border-color: $primary-maroon;
+  }
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: $spacing-lg;
+
+  @include respond-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.news-card {
+  @include card;
+  overflow: hidden;
+  animation: fadeSlideIn 0.4s ease both;
+  display: flex;
+  flex-direction: column;
+
+  &__image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $transition-base;
+    }
+  }
+
+  &:hover &__image img {
+    transform: scale(1.06);
+  }
+
+  &__body {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    flex: 1;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+  }
+
+  &__type-badge {
+    @include badge;
+    font-size: 0.7rem;
+
+    &--workshop { @include badge-gold; }
+    &--hackathon { @include badge-maroon; }
+    &--guest_lecture { @include badge-green; }
+    &--placement_session { background: rgba($info, 0.1); color: $info; }
+    &--general { background: rgba($dark-gray, 0.08); color: $dark-gray; }
+  }
+
+  &__date {
+    @include text-small;
+    font-size: 0.75rem;
+  }
+
+  &__title {
+    @include heading-sans;
+    font-size: 1.05rem;
+    color: $primary-navy;
+    margin: 0;
+  }
+
+  &__content {
+    @include text-body;
+    font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all $transition-base;
+
+    &--expanded {
+      -webkit-line-clamp: unset;
+      display: block;
+    }
+  }
+
+  &__toggle {
+    background: none;
+    border: none;
+    color: $accent-gold-dark;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0;
+    align-self: flex-start;
+    font-family: $font-sans;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $primary-maroon;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: auto;
+    padding-top: $spacing-sm;
+    border-top: 1px solid $light-gray;
+  }
+}
+
+.btn-small {
+  @include btn-secondary;
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.75rem;
+
+  &--danger {
+    color: $danger;
+    border-color: $danger;
+
+    &:hover {
+      background: $danger;
+      color: $white;
+    }
+  }
+}
+
+.news-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: $spacing-3xl $spacing-lg;
+  color: $medium-gray;
+  @include text-body;
+}

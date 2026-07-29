@@ -1,0 +1,233 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.contact-page {
+  @include page-container;
+}
+
+.contact-page__header {
+  margin-bottom: $spacing-xl;
+}
+
+.contact-page__title {
+  @include section-title;
+  margin-bottom: 0;
+}
+
+.gold-divider {
+  @include gold-divider;
+  margin: $spacing-sm 0;
+}
+
+.contact-page__subtitle {
+  @include text-body;
+  margin: 0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: $spacing-xl;
+  align-items: start;
+
+  @include respond-lg {
+    grid-template-columns: 1fr;
+  }
+
+  &__form {
+    min-width: 0;
+  }
+}
+
+.form-card {
+  @include card;
+  padding: $spacing-xl;
+
+  &__title {
+    @include heading-serif;
+    font-size: 1.2rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing-md;
+
+  @include respond-sm {
+    flex-direction: column;
+  }
+
+  &__grow {
+    flex: 1;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.field-label {
+  @include label;
+}
+
+.field-input {
+  @include input-field;
+
+  &--textarea {
+    resize: vertical;
+  }
+}
+
+.field-error {
+  @include text-small;
+  color: $danger;
+  margin-top: $spacing-xs;
+}
+
+.btn-primary {
+  @include btn-primary;
+  align-self: flex-start;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.success-card {
+  @include card;
+  padding: $spacing-3xl $spacing-xl;
+  text-align: center;
+  animation: scaleIn 0.4s ease;
+
+  &__icon {
+    font-size: 3rem;
+    color: $success;
+    margin-bottom: $spacing-md;
+  }
+
+  &__title {
+    @include heading-serif;
+    font-size: 1.3rem;
+    color: $primary-navy;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__text {
+    @include text-body;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.contact-grid__info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.info-card {
+  @include card;
+  padding: $spacing-lg;
+
+  &__title {
+    @include heading-serif;
+    font-size: 1.1rem;
+    color: $primary-navy;
+    margin-bottom: 0;
+  }
+
+  &__note {
+    @include text-small;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid $light-gray;
+  }
+}
+
+.eligibility-list {
+  list-style: none;
+  padding: 0;
+  margin: $spacing-md 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  &__item {
+    @include text-body;
+    font-size: 0.85rem;
+    padding-left: $spacing-lg;
+    position: relative;
+    line-height: 1.5;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 6px;
+      height: 6px;
+      background: $accent-gold;
+      border-radius: 50%;
+    }
+
+    strong {
+      color: $primary-navy;
+    }
+  }
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+
+  &__icon {
+    font-size: 1.2rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($accent-gold, 0.1);
+    border-radius: $radius-md;
+    color: $accent-gold-dark;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    @include text-small;
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__value {
+    @include text-body;
+    font-size: 0.9rem;
+    color: $primary-navy;
+    font-weight: 500;
+    margin: 2px 0 0;
+  }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

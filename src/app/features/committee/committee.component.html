@@ -1,0 +1,145 @@
+<div class="committee-page">
+  <div class="committee-page__header">
+    <div>
+      <h1 class="committee-page__title">COMPESA Committee</h1>
+      <hr class="gold-divider" />
+      <p class="committee-page__subtitle">Meet the team driving innovation and placement excellence</p>
+    </div>
+    @if (isAdminOrCommittee) {
+      <button class="btn-primary" (click)="openAddForm()">+ Add Member</button>
+    }
+  </div>
+
+  @if (showAddForm && isAdminOrCommittee) {
+    <div class="member-form-card">
+      <h2 class="member-form-card__title">{{ editingMember ? 'Edit' : 'Add' }} Committee Member</h2>
+      <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="member-form">
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Name</label>
+            <input type="text" formControlName="name" class="field-input" placeholder="Full name" />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Role</label>
+            <input type="text" formControlName="role" class="field-input" placeholder="e.g. President" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Email</label>
+            <input type="email" formControlName="email" class="field-input" placeholder="email@compesa.in" />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Batch Year</label>
+            <input type="text" formControlName="batch_year" class="field-input" placeholder="e.g. 2026" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Photo URL</label>
+            <input type="text" formControlName="photo_url" class="field-input" placeholder="https://..." />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Order</label>
+            <input type="number" formControlName="order" class="field-input" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Bio</label>
+          <textarea formControlName="bio" class="field-input field-input--textarea" rows="3" placeholder="Brief bio..."></textarea>
+        </div>
+        <div class="field-checkbox">
+          <label>
+            <input type="checkbox" formControlName="is_faculty_coordinator" />
+            <span>Faculty Coordinator</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="memberForm.invalid || submitting">
+            {{ submitting ? 'Saving...' : (editingMember ? 'Update' : 'Add Member') }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (facultyCoordinators.length > 0) {
+    <section class="coordinator-section">
+      <h2 class="section-title">Faculty Coordinator</h2>
+      <div class="member-grid member-grid--single">
+        @for (member of facultyCoordinators; track member.id) {
+          <div class="member-wrapper" style="animation-delay: {{ $index * 0.1 }}s">
+            <app-member-card
+              [name]="member.name"
+              [role]="member.role"
+              [bio]="member.bio"
+              [photoUrl]="member.photo_url"
+              [isFacultyCoordinator]="true"
+            />
+            @if (isAdminOrCommittee) {
+              <div class="member-actions">
+                <button class="btn-small" (click)="openEditForm(member)">Edit</button>
+                <button class="btn-small btn-small--danger" (click)="deleteMember(member.id)">Delete</button>
+                <button class="btn-small" (click)="archiveMember(member)">Archive</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="members-section">
+    <h2 class="section-title">Current Committee</h2>
+    <div class="member-grid">
+      @for (member of regularMembers; track member.id) {
+        <div class="member-wrapper" style="animation-delay: {{ $index * 0.05 }}s">
+          <app-member-card
+            [name]="member.name"
+            [role]="member.role"
+            [bio]="member.bio"
+            [photoUrl]="member.photo_url"
+          />
+          @if (isAdminOrCommittee) {
+            <div class="member-actions">
+              <button class="btn-small" (click)="openEditForm(member)">Edit</button>
+              <button class="btn-small btn-small--danger" (click)="deleteMember(member.id)">Delete</button>
+              <button class="btn-small" (click)="archiveMember(member)">Archive</button>
+            </div>
+          }
+        </div>
+      } @empty {
+        <p class="empty-text">No committee members yet.</p>
+      }
+    </div>
+  </section>
+
+  @if (pastMembers.length > 0) {
+    <section class="past-section">
+      <button class="btn-link" (click)="togglePast()">
+        {{ showPast ? 'Hide' : 'Show' }} Past Members ({{ pastMembers.length }})
+      </button>
+      @if (showPast) {
+        <div class="member-grid">
+          @for (member of pastMembers; track member.id) {
+            <div class="member-wrapper" style="animation-delay: {{ $index * 0.05 }}s">
+              <app-member-card
+                [name]="member.name"
+                [role]="member.role"
+                [bio]="member.bio"
+                [photoUrl]="member.photo_url"
+              />
+              @if (isAdminOrCommittee) {
+                <div class="member-actions">
+                  <button class="btn-small" (click)="openEditForm(member)">Edit</button>
+                  <button class="btn-small btn-small--danger" (click)="deleteMember(member.id)">Delete</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

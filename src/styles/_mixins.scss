@@ -1,0 +1,242 @@
+@use 'variables' as *;
+
+@mixin respond-sm {
+  @media (max-width: $breakpoint-sm) { @content; }
+}
+@mixin respond-md {
+  @media (max-width: $breakpoint-md) { @content; }
+}
+@mixin respond-lg {
+  @media (max-width: $breakpoint-lg) { @content; }
+}
+@mixin respond-xl {
+  @media (max-width: $breakpoint-xl) { @content; }
+}
+
+@mixin card {
+  background: $white;
+  border: 1px solid $light-gray;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+}
+
+@mixin card-flat {
+  background: $white;
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  box-shadow: none;
+}
+
+@mixin gold-divider {
+  height: 2px;
+  background: linear-gradient(90deg, $accent-gold, $accent-gold-light, $accent-gold);
+  border: none;
+  width: 60px;
+  margin: $spacing-md 0;
+}
+
+@mixin gold-divider-full {
+  height: 2px;
+  background: linear-gradient(90deg, $accent-gold, $accent-gold-light 50%, $accent-gold);
+  border: none;
+  width: 100%;
+}
+
+@mixin heading-serif {
+  font-family: $font-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@mixin heading-sans {
+  font-family: $font-sans;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+@mixin text-body {
+  font-family: $font-sans;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: $dark-gray;
+}
+
+@mixin text-small {
+  font-family: $font-sans;
+  font-size: 0.825rem;
+  line-height: 1.5;
+  color: $medium-gray;
+}
+
+@mixin btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  background: linear-gradient(135deg, $primary-maroon, darken($primary-maroon, 8%));
+  color: $white;
+  border: none;
+  border-radius: $radius-md;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-base;
+  &:hover {
+    background: linear-gradient(135deg, darken($primary-maroon, 4%), darken($primary-maroon, 12%));
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  background: transparent;
+  color: $primary-maroon;
+  border: 2px solid $primary-maroon;
+  border-radius: $radius-md;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-base;
+  &:hover {
+    background: $primary-maroon;
+    color: $white;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  background: linear-gradient(135deg, $accent-gold, $accent-gold-dark);
+  color: $primary-dark;
+  border: none;
+  border-radius: $radius-md;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $transition-base;
+  &:hover {
+    box-shadow: $shadow-gold;
+    transform: translateY(-1px);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin input-field {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $light-gray;
+  border-radius: $radius-md;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $near-black;
+  background: $white;
+  transition: border-color $transition-fast;
+  &:focus {
+    outline: none;
+    border-color: $accent-gold;
+    box-shadow: 0 0 0 3px rgba($accent-gold, 0.15);
+  }
+  &::placeholder {
+    color: $medium-gray;
+  }
+}
+
+@mixin label {
+  display: block;
+  font-family: $font-sans;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: $dark-gray;
+  margin-bottom: $spacing-xs;
+}
+
+@mixin section-title {
+  @include heading-serif;
+  font-size: 1.5rem;
+  color: $primary-navy;
+  margin-bottom: $spacing-sm;
+}
+
+@mixin page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-xl $spacing-lg;
+}
+
+@mixin fade-slide-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.4s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin stagger-item($index, $base-delay: 0.1s) {
+  animation-delay: $index * $base-delay;
+}
+
+@mixin gold-gradient-text {
+  background: linear-gradient(135deg, $accent-gold, $accent-gold-dark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin badge {
+  display: inline-block;
+  padding: 2px $spacing-sm;
+  border-radius: 9999px;
+  font-family: $font-sans;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@mixin badge-maroon {
+  @include badge;
+  background: rgba($primary-maroon, 0.1);
+  color: $primary-maroon;
+}
+
+@mixin badge-gold {
+  @include badge;
+  background: rgba($accent-gold, 0.15);
+  color: $accent-gold-dark;
+}
+
+@mixin badge-green {
+  @include badge;
+  background: rgba($success, 0.1);
+  color: $success;
+}

@@ -1,0 +1,149 @@
+<div class="placement-page">
+  <div class="placement-page__header">
+    <div>
+      <h1 class="placement-page__title">Placement Club</h1>
+      <hr class="gold-divider" />
+      <p class="placement-page__subtitle">Driving placement preparedness and industry connections</p>
+    </div>
+    @if (isAdminOrPlacementClub) {
+      <button class="btn-primary" (click)="openAddForm()">+ Add Member</button>
+    }
+  </div>
+
+  @if (showAddForm && isAdminOrPlacementClub) {
+    <div class="member-form-card">
+      <h2 class="member-form-card__title">{{ editingMember ? 'Edit' : 'Add' }} Placement Club Member</h2>
+      <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="member-form">
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Name</label>
+            <input type="text" formControlName="name" class="field-input" placeholder="Full name" />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Role</label>
+            <input type="text" formControlName="role" class="field-input" placeholder="e.g. Club Lead" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Email</label>
+            <input type="email" formControlName="email" class="field-input" placeholder="email@compesa.in" />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Batch Year</label>
+            <input type="text" formControlName="batch_year" class="field-input" placeholder="e.g. 2026" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field form-row__grow">
+            <label class="field-label">Photo URL</label>
+            <input type="text" formControlName="photo_url" class="field-input" placeholder="https://..." />
+          </div>
+          <div class="field form-row__grow">
+            <label class="field-label">Order</label>
+            <input type="number" formControlName="order" class="field-input" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Bio</label>
+          <textarea formControlName="bio" class="field-input field-input--textarea" rows="3" placeholder="Brief bio..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="memberForm.invalid || submitting">
+            {{ submitting ? 'Saving...' : (editingMember ? 'Update' : 'Add Member') }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <section class="activities-section">
+    <h2 class="section-title">Activities &amp; Initiatives</h2>
+    <div class="activities-grid">
+      <div class="activity-card">
+        <div class="activity-card__icon">&#x1f393;</div>
+        <h3 class="activity-card__title">Mock Interviews</h3>
+        <p class="activity-card__desc">Regular mock interview sessions with industry professionals</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-card__icon">&#x1f4da;</div>
+        <h3 class="activity-card__title">Resume Building</h3>
+        <p class="activity-card__desc">Workshops and one-on-one resume reviews</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-card__icon">&#x1f4bc;</div>
+        <h3 class="activity-card__title">Company Prep</h3>
+        <p class="activity-card__desc">Company-specific preparation sessions and resources</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-card__icon">&#x1f4ac;</div>
+        <h3 class="activity-card__title">Industry Talks</h3>
+        <p class="activity-card__desc">Guest lectures from alumni and industry experts</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="members-section">
+    <h2 class="section-title">Current Members</h2>
+    <div class="member-grid">
+      @for (member of currentMembers; track member.id) {
+        <div class="member-wrapper" style="animation-delay: {{ $index * 0.05 }}s">
+          <app-member-card
+            [name]="member.name"
+            [role]="member.role"
+            [bio]="member.bio"
+            [photoUrl]="member.photo_url"
+          />
+          @if (isAdminOrPlacementClub) {
+            <div class="member-actions">
+              <button class="btn-small" (click)="openEditForm(member)">Edit</button>
+              <button class="btn-small btn-small--danger" (click)="deleteMember(member.id)">Delete</button>
+              <button class="btn-small" (click)="archiveMember(member)">Archive</button>
+            </div>
+          }
+        </div>
+      } @empty {
+        <p class="empty-text">No placement club members yet.</p>
+      }
+    </div>
+  </section>
+
+  @if (pastMembers.length > 0) {
+    <section class="past-section">
+      <button class="btn-link" (click)="togglePast()">
+        {{ showPast ? 'Hide' : 'Show' }} Past Members ({{ pastMembers.length }})
+      </button>
+      @if (showPast) {
+        <div class="member-grid">
+          @for (member of pastMembers; track member.id) {
+            <div class="member-wrapper" style="animation-delay: {{ $index * 0.05 }}s">
+              <app-member-card
+                [name]="member.name"
+                [role]="member.role"
+                [bio]="member.bio"
+                [photoUrl]="member.photo_url"
+              />
+              @if (isAdminOrPlacementClub) {
+                <div class="member-actions">
+                  <button class="btn-small" (click)="openEditForm(member)">Edit</button>
+                  <button class="btn-small btn-small--danger" (click)="deleteMember(member.id)">Delete</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <section class="resources-section">
+    <h2 class="section-title">Resources</h2>
+    <div class="resources-list">
+      <a href="#" class="resource-link">Placement Preparation Guide</a>
+      <a href="#" class="resource-link">Resume Template</a>
+      <a href="#" class="resource-link">Interview Questions Bank</a>
+      <a href="#" class="resource-link">Company-wise Previous Papers</a>
+    </div>
+  </section>
+</div>

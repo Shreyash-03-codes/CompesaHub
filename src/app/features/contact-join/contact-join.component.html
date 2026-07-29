@@ -1,0 +1,132 @@
+<div class="contact-page">
+  <div class="contact-page__header">
+    <h1 class="contact-page__title">Contact &amp; Join Us</h1>
+    <hr class="gold-divider" />
+    <p class="contact-page__subtitle">Get in touch or find out how to become part of COMPESA</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-grid__form">
+      @if (!submitted) {
+        <div class="form-card">
+          <h2 class="form-card__title">Send us a Message</h2>
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+            <div class="form-row">
+              <div class="field form-row__grow">
+                <label class="field-label" for="name">Name</label>
+                <input id="name" type="text" formControlName="name" class="field-input" placeholder="Your full name" />
+                @if (contactForm.controls.name.touched && contactForm.controls.name.errors?.['required']) {
+                  <small class="field-error">Name is required</small>
+                }
+              </div>
+              <div class="field form-row__grow">
+                <label class="field-label" for="email">Email</label>
+                <input id="email" type="email" formControlName="email" class="field-input" placeholder="your@email.com" />
+                @if (contactForm.controls.email.touched && contactForm.controls.email.errors?.['required']) {
+                  <small class="field-error">Email is required</small>
+                }
+                @if (contactForm.controls.email.touched && contactForm.controls.email.errors?.['email']) {
+                  <small class="field-error">Enter a valid email</small>
+                }
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field form-row__grow">
+                <label class="field-label" for="phone">Phone</label>
+                <input id="phone" type="tel" formControlName="phone" class="field-input" placeholder="+91 98765 43210" />
+                @if (contactForm.controls.phone.touched && contactForm.controls.phone.errors?.['required']) {
+                  <small class="field-error">Phone is required</small>
+                }
+              </div>
+              <div class="field form-row__grow">
+                <label class="field-label" for="inquiry_type">Inquiry Type</label>
+                <select id="inquiry_type" formControlName="inquiry_type" class="field-input">
+                  @for (type of inquiryTypes; track type.value) {
+                    <option [value]="type.value">{{ type.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="message">Message</label>
+              <textarea id="message" formControlName="message" class="field-input field-input--textarea" rows="5" placeholder="Tell us what's on your mind..."></textarea>
+              @if (contactForm.controls.message.touched && contactForm.controls.message.errors?.['required']) {
+                <small class="field-error">Message is required</small>
+              }
+            </div>
+
+            <button type="submit" class="btn-primary" [disabled]="contactForm.invalid || submitting">
+              {{ submitting ? 'Sending...' : 'Send Message' }}
+            </button>
+          </form>
+        </div>
+      }
+
+      @if (submitted) {
+        <div class="success-card">
+          <div class="success-card__icon">&#10003;</div>
+          <h2 class="success-card__title">Message Sent!</h2>
+          <p class="success-card__text">Thank you for reaching out. We'll get back to you shortly.</p>
+          <button class="btn-secondary" (click)="resetForm()">Send Another Message</button>
+        </div>
+      }
+    </div>
+
+    <div class="contact-grid__info">
+      <div class="info-card">
+        <h2 class="info-card__title">Eligibility to Join COMPESA</h2>
+        <hr class="gold-divider" />
+        <ul class="eligibility-list">
+          <li class="eligibility-list__item">
+            <strong>Enrolled</strong> in the Computer Engineering program at our institution
+          </li>
+          <li class="eligibility-list__item">
+            <strong>Active participation</strong> in technical events and workshops
+          </li>
+          <li class="eligibility-list__item">
+            <strong>Good academic standing</strong> with a minimum CGPA requirement
+          </li>
+          <li class="eligibility-list__item">
+            <strong>Commitment</strong> to contribute at least 2 hours per week
+          </li>
+          <li class="eligibility-list__item">
+            <strong>Passion</strong> for technology, innovation, and peer learning
+          </li>
+        </ul>
+        <p class="info-card__note">
+          Applications are invited at the start of each semester. Watch the News section for announcements.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h2 class="info-card__title">Get in Touch</h2>
+        <hr class="gold-divider" />
+        <div class="contact-details">
+          <div class="contact-detail">
+            <span class="contact-detail__icon">&#9993;</span>
+            <div>
+              <p class="contact-detail__label">Email</p>
+              <p class="contact-detail__value">compesa&#64;institution.edu</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail__icon">&#9742;</span>
+            <div>
+              <p class="contact-detail__label">Phone</p>
+              <p class="contact-detail__value">+91 12345 67890</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail__icon">&#9872;</span>
+            <div>
+              <p class="contact-detail__label">Location</p>
+              <p class="contact-detail__value">Computer Engineering Department, Campus</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
